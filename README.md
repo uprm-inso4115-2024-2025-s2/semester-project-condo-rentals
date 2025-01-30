@@ -12,31 +12,31 @@ Condo Rentals is a web application designed to assist students and residents in 
 
 ## Teams
 
-**User Authentication & Profile Team**
--Implement user authentication (Login, Registration, Password Recovery).
--Develop a profile system for landlords and tenants (Name, Contact Info, Rental Listings, Profile Picture).
--Ensure secure access control and role-based permissions (Tenant vs. Landlord).
--Implement social login options (Google, Facebook).
--Develop a user-to-user messaging system for direct communication between tenants and landlords.
--Implement email and push notifications for rental inquiries.
--Add saved listings and favorites for easy access to preferred properties.
--Ensure messages are encrypted for privacy and security.
+### **User Authentication & Profile Team:**
+- Implement user authentication (Login, Registration, Password Recovery).
+- Develop a profile system for landlords and tenants (Name, Contact Info, Rental Listings, Profile Picture).
+- Ensure secure access control and role-based permissions (Tenant vs. Landlord).
+- Implement social login options (Google, Facebook).
+- Develop a user-to-user messaging system for direct communication between tenants and landlords.
+- Implement email and push notifications for rental inquiries.
+- Add saved listings and favorites for easy access to preferred properties.
+- Ensure messages are encrypted for privacy and security.
 
-**Rental Listings & Search Team**
--Develop the rental listing system, allowing users to post properties with images, descriptions, and pricing.
--Implement search functionality with advanced filters (Price Range, Location, Room Type, Amenities).
--Integrate a sorting system for popularity, rating, and date added.
--Ensure real-time updates for available listings.
+### **Rental Listings & Search Team:**
+- Develop the rental listing system, allowing users to post properties with images, descriptions, and pricing.
+- Implement search functionality with advanced filters (Price Range, Location, Room Type, Amenities).
+- Integrate a sorting system for popularity, rating, and date added.
+- Ensure real-time updates for available listings.
 
-**Interactive Map & Location Services Team**
--Implement an interactive map showing available rental listings.
--Integrate real-time geolocation services to match users with nearby rentals.
--Allow landlords to pin locations when adding listings.
--Include a roommate search feature for users looking for shared accommodations.
+### **Interactive Map & Location Services Team:**
+- Implement an interactive map showing available rental listings.
+- Integrate real-time geolocation services to match users with nearby rentals.
+- Allow landlords to pin locations when adding listings.
+- Include a roommate search feature for users looking for shared accommodations.
 
-**Backend & Infrastructure Team**
--Design the database schema to handle user accounts, rental listings, and messaging data.
--Develop an API to facilitate frontend-backend interactions.
--Handle server-side logic for storing listings, managing user sessions, and processing search queries.
--Ensure data consistency and optimize performance.
--Implement data caching and security measures.
+### **Backend & Infrastructure Team:**
+- Design the database schema to handle user accounts, rental listings, and messaging data.
+- Develop an API to facilitate frontend-backend interactions.
+- Handle server-side logic for storing listings, managing user sessions, and processing search queries.
+- Ensure data consistency and optimize performance.
+- Implement data caching and security measures.
