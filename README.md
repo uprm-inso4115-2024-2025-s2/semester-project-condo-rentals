@@ -40,3 +40,46 @@ Condo Rentals is a web application designed to assist students and residents in 
 - Handle server-side logic for storing listings, managing user sessions, and processing search queries.
 - Ensure data consistency and optimize performance.
 - Implement data caching and security measures.
+
+
+
+## Set Up Guide 
+
+### Android Emulator:
+
+- Windows / Mac:
+
+  - Download and install Android Studio from developer.android.com.
+
+  - Open Android Studio and go to Device Manager (on the right panel or via Tools > Device Manager).
+
+  - Click Create Device.
+
+  - Select a hardware profile (e.g., Pixel 6) and click Next.
+
+  - Choose a system image (Download if necessary) and click Next.
+
+  - Configure the emulator settings as needed and click Finish.
+    
+  - Launch the Emulator
+
+
+### iOS Emulator:
+Disclaimer: Only Mac Users. Windows users must use Android Studio
+
+- Download Xcode from the Mac App Store or developer.apple.com.
+
+- Install and launch Xcode.
+
+- Click on Create new Project
+  
+- Install the Xcode Command Line Tools.
+  - Open Xcode
+    - Choose Settings... (or Preferences...) from the Xcode menu.
+    - Go to the Locations panel and install the tools by selecting the most recent version in the Command Line Tools dropdown.
+- Install Simulator
+  - Open Xcode > Settings... (or Preferences...) and select the Platforms (or Components) tab.
+  - Select a Simulator
+
+
+
