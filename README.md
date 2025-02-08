@@ -10,6 +10,11 @@ Condo Rentals is a web application designed to assist students and residents in 
 
 **Managers**: John R. Santiago and Samael A. Álvarez
 
+## Documentation
+Here you will find the Google Doc for the documentation of the project:
+
+[Condo Rentals Documentation](https://docs.google.com/document/d/12QSLfeGDV5fkazqT66UNrlGJtfgcyKCQkyT01nMg3dg/edit?usp=sharing)
+
 ## Teams
 
 ### **User Authentication & Profile Team:**
