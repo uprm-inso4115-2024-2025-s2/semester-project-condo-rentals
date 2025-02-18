@@ -36,22 +36,29 @@ This guide covers how to set up your development environment for React Native on
 
 ### Installation Steps
 
-1. **Install React Native CLI**
+1. **Install Expo CLI**
    ```bash
-   npm install -g react-native-cli
+   npm install -g expo-cli
    ```
 
 2. **Create a new project**
    ```bash
-   npx react-native init YourProjectName
+   npx create-expo-app YourProjectName
    ```
 
 3. **Run the project**
    ```bash
    cd YourProjectName
-   npx react-native run-ios     # For iOS
-   npx react-native run-android # For Android
+   npm run ios     # For iOS
+   npm run android # For Android
    ```
+   or 
+   ```bash
+   npx expo start
+   ```
+   Then:
+   - **Press** ```i``` to run on **iOS**
+   - **Press** ```a``` to run on **Android**
 
 ## Windows Setup
 
@@ -79,21 +86,27 @@ This guide covers how to set up your development environment for React Native on
    - Install Intel x86 Atom System Image
    - Install Android Emulator
 
-2. **Install React Native CLI**
+2. **Install Expo CLI**
    ```bash
-   npm install -g react-native-cli
+   npm install -g expo-cli
    ```
 
 3. **Create a new project**
    ```bash
-   npx react-native init YourProjectName
+   npx create-expo-app YourProjectName
    ```
 
 4. **Run the project**
    ```bash
    cd YourProjectName
-   npx react-native run-android
+   npm run android 
    ```
+   or 
+   ```bash
+   npx expo start
+   ```
+   Then:
+   - **Press** ```a``` to run on **Android**
 
 ## Common Issues and Troubleshooting
 
