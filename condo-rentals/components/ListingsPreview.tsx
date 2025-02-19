@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
-interface RentalListingProps {
+interface ListingPreviewProps {
   imageUrl?: string;
   landlordName: string;
   priceLocation: string;
   onPress: () => void;
 }
 
-const RentalListingPreviewCard: React.FC<RentalListingProps> = ({
+const RentalListingPreviewCard: React.FC<ListingPreviewProps> = ({
   imageUrl,
   landlordName,
   priceLocation,
