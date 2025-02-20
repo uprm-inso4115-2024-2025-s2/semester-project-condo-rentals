@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -23,6 +23,9 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
   imageUrl,
   onClose,
 }) => {
+  const [descriptionHeight, setDescriptionHeight] = useState(50);
+  const [assetsHeight, setAssetsHeight] = useState(100);
+
   return (
     <View style={styles.overlay}>
       <View style={styles.card}>
@@ -33,6 +36,11 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
 
         {/* Listing Details Header */}
         <Text style={styles.header}>Listing Details</Text>
+        
+        {/* Spacing Below Header */}
+        <View style={styles.spacer} />
+
+        {/* Location */}
         <Text style={styles.subHeader}>{location}</Text>
 
         {/* Property Image */}
@@ -42,21 +50,30 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
           resizeMode="cover"
         />
 
-        {/* Landlord Name & Description */}
+        {/* Landlord Name */}
         <Text style={styles.label}>{landlordName}</Text>
+
+        {/* Brief Description of the Landlord */}
         <TextInput
-          style={styles.input}
+          style={[styles.input, { height: descriptionHeight }]}
           value={landlordDescription}
           editable={false}
+          multiline
+          onContentSizeChange={(e) =>
+            setDescriptionHeight(e.nativeEvent.contentSize.height + 10)
+          }
         />
 
-        {/* Condo Features & Price */}
-        <Text style={styles.label}>Assets and Price</Text>
+        {/* Condo Assets and Price */}
+        <Text style={styles.label}>Condo assets and price</Text>
         <TextInput
-          style={[styles.input, styles.textArea]}
-          value={`Features: ${condoFeatures}\nPrice: ${price}`}
+          style={[styles.input, styles.textArea, { height: assetsHeight }]}
+          value={`${condoFeatures}\n\nPrice: ${price}`}
           editable={false}
           multiline
+          onContentSizeChange={(e) =>
+            setAssetsHeight(e.nativeEvent.contentSize.height + 10)
+          }
         />
       </View>
     </View>
@@ -68,10 +85,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.3)", // Transparent background effect
   },
   card: {
     width: width * 0.92,
-    height: height * 0.78,
     backgroundColor: "white",
     borderRadius: 14,
     padding: 20,
@@ -92,6 +109,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     alignSelf: "flex-start",
+  },
+  spacer: {
+    height: 8, // ✅ Adds space between the header and the location
   },
   subHeader: {
     fontSize: 14,
@@ -123,7 +143,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   textArea: {
-    height: 100,
     textAlignVertical: "top",
   },
 });
