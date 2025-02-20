@@ -113,8 +113,8 @@ const Listings = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 55,
-    paddingBottom: 5,
+    paddingTop: 70,
+    paddingBottom: 30,
   },
   scrollContainer: {
     flexGrow: 1,
