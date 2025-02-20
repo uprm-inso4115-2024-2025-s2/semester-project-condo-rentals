@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import React, { useState, useRef } from "react";
+import { 
+  View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Dimensions, Animated 
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
@@ -26,11 +28,38 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
   const [descriptionHeight, setDescriptionHeight] = useState(50);
   const [assetsHeight, setAssetsHeight] = useState(100);
 
+  const slideAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const handleClose = () => {
+    Animated.parallel([
+      Animated.timing(slideAnim, {
+        toValue: height,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      onClose();
+    });
+  };
+
   return (
-    <View style={styles.overlay}>
-      <View style={styles.card}>
+    <Animated.View style={[styles.overlay, { opacity: fadeAnim }]}>
+      <Animated.View
+        style={[
+          styles.card,
+          {
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         {/* Close Button */}
-        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
 
@@ -75,8 +104,8 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
             setAssetsHeight(e.nativeEvent.contentSize.height + 10)
           }
         />
-      </View>
-    </View>
+      </Animated.View>
+    </Animated.View>
   );
 };
 
