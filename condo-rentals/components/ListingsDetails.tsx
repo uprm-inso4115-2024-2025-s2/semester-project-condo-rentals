@@ -6,12 +6,23 @@ const { width, height } = Dimensions.get("window");
 
 interface ListingDetailsProps {
   landlordName: string;
-  condoAssetsAndPrice: string;
+  landlordDescription: string;
+  location: string;
+  condoFeatures: string;
+  price: string;
   imageUrl?: string;
   onClose: () => void;
 }
 
-const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({ landlordName, condoAssetsAndPrice, imageUrl, onClose }) => {
+const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
+  landlordName,
+  landlordDescription,
+  location,
+  condoFeatures,
+  price,
+  imageUrl,
+  onClose,
+}) => {
   return (
     <View style={styles.overlay}>
       <View style={styles.card}>
@@ -20,9 +31,9 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({ landlordName,
           <Ionicons name="close" size={24} color="black" />
         </TouchableOpacity>
 
-        {/* Condo Details Header */}
-        <Text style={styles.header}>Condo Details</Text>
-        <Text style={styles.subHeader}>Lipsum dolor sit amet, consectetur adipiscing elit</Text>
+        {/* Listing Details Header */}
+        <Text style={styles.header}>Listing Details</Text>
+        <Text style={styles.subHeader}>{location}</Text>
 
         {/* Property Image */}
         <Image
@@ -31,25 +42,21 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({ landlordName,
           resizeMode="cover"
         />
 
-        {/* Landlord Name */}
-        <Text style={styles.label}>Landlord name</Text>
+        {/* Landlord Name & Description */}
+        <Text style={styles.label}>{landlordName}</Text>
         <TextInput
           style={styles.input}
-          value={landlordName}
+          value={landlordDescription}
           editable={false}
-          placeholder="Enter landlord name"
-          placeholderTextColor="#A0A0A0"
         />
 
-        {/* Condo Assets and Price */}
-        <Text style={styles.label}>Condo assets and price</Text>
+        {/* Condo Features & Price */}
+        <Text style={styles.label}>Assets and Price</Text>
         <TextInput
           style={[styles.input, styles.textArea]}
-          value={condoAssetsAndPrice}
+          value={`Features: ${condoFeatures}\nPrice: ${price}`}
           editable={false}
           multiline
-          placeholder="Enter condo details"
-          placeholderTextColor="#A0A0A0"
         />
       </View>
     </View>
