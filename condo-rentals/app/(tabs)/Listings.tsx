@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, ScrollView, StyleSheet, Modal } from "react-native";
 import RentalListingCard from "../../components/ListingsPreview";
-import CondoDetails from "../../components/ListingsDetails"; 
+import CondoDetails from "../../components/ListingsDetails";
 
 const Listings = () => {
   const [selectedListing, setSelectedListing] = useState<{
@@ -41,6 +41,34 @@ const Listings = () => {
       location: "Mayagüez Terrace",
       condoFeatures: "2 Beds, 1 Bath, Shared Kitchen, Study Lounge",
       price: "$550 per month",
+    },
+    {
+      landlordName: "Isabel Martínez",
+      landlordDescription: "Cozy apartment with study-friendly environment.",
+      location: "Condominio Las Américas",
+      condoFeatures: "1 Bed, 1 Bath, Private Balcony, WiFi",
+      price: "$470 per month",
+    },
+    {
+      landlordName: "Miguel Santiago",
+      landlordDescription: "Affordable rent, close to supermarkets and transport.",
+      location: "Residencial Universitario",
+      condoFeatures: "1 Bed, 1 Bath, Shared Laundry, AC",
+      price: "$430 per month",
+    },
+    {
+      landlordName: "Laura Hernández",
+      landlordDescription: "Safe neighborhood, walking distance from UPRM.",
+      location: "Jardines de Mayagüez",
+      condoFeatures: "2 Beds, 1 Bath, Gated Community, Parking",
+      price: "$520 per month",
+    },
+    {
+      landlordName: "Pedro Gómez",
+      landlordDescription: "Affordable student housing with all essentials included.",
+      location: "Residencial Los Pinos",
+      condoFeatures: "1 Bed, 1 Bath, WiFi, Mini-Fridge, Study Desk",
+      price: "$410 per month",
     },
   ];
 

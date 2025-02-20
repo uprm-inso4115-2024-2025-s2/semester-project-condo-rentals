@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.3)", // Transparent background effect
+    backgroundColor: "rgba(0,0,0,0.3)",
   },
   card: {
     width: width * 0.92,
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
   },
   spacer: {
-    height: 8, // ✅ Adds space between the header and the location
+    height: 8,
   },
   subHeader: {
     fontSize: 14,
