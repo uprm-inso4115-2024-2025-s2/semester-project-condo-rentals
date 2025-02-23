@@ -1,11 +1,17 @@
 const express = require("express");
-const { createBooking, modifyBooking, cancelBooking, getUserBookings } = require("../controllers/bookingController");
-
 const router = express.Router();
+const bookingController = require("../controllers/bookingController");
 
-router.post("/", createBooking);
-router.put("/:id", modifyBooking);
-router.delete("/:id", cancelBooking);
-router.get("/:user_id", getUserBookings);
+// Route to get all bookings
+router.get("/", bookingController.getBookings);
+
+// Route to insert a new booking
+router.post("/", bookingController.insertBooking);
+
+// Router to update a booking
+router.put("/:id", bookingController.updateBooking);
+
+// Router to delete booking
+router.delete("/:id", bookingController.deleteBooking);
 
 module.exports = router;

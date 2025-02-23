@@ -1,10 +1,6 @@
-require("dotenv").config(); // Ensure .env is loaded before accessing environment variables
 const { createClient } = require("@supabase/supabase-js");
+require("dotenv").config();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
-
-if (!process.env.SUPABASE_URL || !process.env.SUPABASE_KEY) {
-    throw new Error("Missing Supabase environment variables!");
-}
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 module.exports = supabase;
