@@ -31,17 +31,34 @@ const Listings = () => {
     { landlordName: "Pedro Gómez", landlordDescription: "Affordable student housing with all essentials included.", location: "Pueblo Mayagüez", condoFeatures: "1 Bed, 1 Bath, WiFi, Mini-Fridge, Study Desk", price: "$410 per month" },
   ];
 
-  const filteredListings = listings.filter(
+  const handleSearchSubmit = () => {
+    setSearchQuery(searchText);
+    Keyboard.dismiss();
+  };
+
+  let filteredListings = listings.filter(
     (listing) =>
       listing.landlordName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       listing.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
       listing.condoFeatures.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearchSubmit = () => {
-    setSearchQuery(searchText);
-    Keyboard.dismiss();
-  };
+  if (selectedFilter) {
+    filteredListings = [...filteredListings].sort((a, b) => {
+      switch (selectedFilter) {
+        case "Price: Low to High":
+          return parseInt(a.price.replace(/\D/g, "")) - parseInt(b.price.replace(/\D/g, ""));
+        case "Price: High to Low":
+          return parseInt(b.price.replace(/\D/g, "")) - parseInt(a.price.replace(/\D/g, ""));
+        case "Landlord Name":
+          return a.landlordName.localeCompare(b.landlordName);
+        case "Location":
+          return a.location.localeCompare(b.location);
+        default:
+          return 0;
+      }
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -99,7 +116,10 @@ const Listings = () => {
               <TouchableOpacity 
                 key={index} 
                 style={styles.filterOption} 
-                onPress={() => setSelectedFilter(filter)}
+                onPress={() => {
+                  setSelectedFilter(filter);
+                  setIsFilterVisible(false);
+                }}
               >
                 <Ionicons name={selectedFilter === filter ? "radio-button-on" : "radio-button-off"} size={20} color="black" />
                 <Text style={styles.filterText}>{filter}</Text>
