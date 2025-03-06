@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Modal, TextInput, TouchableOpacity } from "react-native";
+import { View, ScrollView, StyleSheet, Modal, TextInput, TouchableOpacity, Keyboard } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import RentalListingCard from "../../components/ListingsPreview";
 import CondoDetails from "../../components/ListingsDetails";
@@ -16,6 +16,7 @@ const Listings = () => {
   
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const listings = [
     {
@@ -76,33 +77,48 @@ const Listings = () => {
     },
   ];
 
+  const filteredListings = listings.filter(
+    (listing) =>
+      listing.landlordName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      listing.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      listing.condoFeatures.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearchSubmit = () => {
+    setSearchQuery(searchText);
+    Keyboard.dismiss();
+  };
+
   return (
     <View style={styles.container}>
-      {/* Search Icon */}
+      {/* Search Bar and Icon */}
       <View style={styles.searchContainer}>
         {isSearchVisible ? (
           <View style={styles.searchBar}>
             <TextInput
               style={styles.input}
-              placeholder="Search text"
+              placeholder="Search listings..."
               placeholderTextColor="#A0A0A0"
               value={searchText}
               onChangeText={setSearchText}
+              onSubmitEditing={handleSearchSubmit}
+              returnKeyType="search"
             />
-            <TouchableOpacity onPress={() => setIsSearchVisible(false)}>
+            <TouchableOpacity onPress={() => { setSearchText(""); setSearchQuery(""); setIsSearchVisible(false); }}>
               <Ionicons name="close" size={20} color="black" />
             </TouchableOpacity>
           </View>
         ) : (
-          <TouchableOpacity onPress={() => setIsSearchVisible(true)}>
+          <TouchableOpacity onPress={() => setIsSearchVisible(true)} style={styles.searchIcon}>
             <Ionicons name="search-outline" size={24} color="black" />
           </TouchableOpacity>
         )}
       </View>
 
+      {/* Listings Grid */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.grid}>
-          {listings.map((listing, index) => (
+          {filteredListings.map((listing, index) => (
             <RentalListingCard
               key={index}
               landlordName={listing.landlordName}
@@ -146,7 +162,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingHorizontal: 20,
-    marginBottom: 10,
   },
   searchBar: {
     flexDirection: "row",
@@ -156,6 +171,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     flex: 1,
+  },
+  searchIcon: {
+    padding: 10,
   },
   input: {
     flex: 1,
