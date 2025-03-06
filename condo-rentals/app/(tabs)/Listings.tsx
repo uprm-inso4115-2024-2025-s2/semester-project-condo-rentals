@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Modal } from "react-native";
+import { View, ScrollView, StyleSheet, Modal, TextInput, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import RentalListingCard from "../../components/ListingsPreview";
 import CondoDetails from "../../components/ListingsDetails";
 
@@ -12,6 +13,9 @@ const Listings = () => {
     price: string;
     imageUrl?: string;
   } | null>(null);
+  
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const listings = [
     {
@@ -74,6 +78,28 @@ const Listings = () => {
 
   return (
     <View style={styles.container}>
+      {/* Search Icon */}
+      <View style={styles.searchContainer}>
+        {isSearchVisible ? (
+          <View style={styles.searchBar}>
+            <TextInput
+              style={styles.input}
+              placeholder="Search text"
+              placeholderTextColor="#A0A0A0"
+              value={searchText}
+              onChangeText={setSearchText}
+            />
+            <TouchableOpacity onPress={() => setIsSearchVisible(false)}>
+              <Ionicons name="close" size={20} color="black" />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity onPress={() => setIsSearchVisible(true)}>
+            <Ionicons name="search-outline" size={24} color="black" />
+          </TouchableOpacity>
+        )}
+      </View>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.grid}>
           {listings.map((listing, index) => (
@@ -115,6 +141,26 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 70,
     paddingBottom: 30,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingHorizontal: 20,
+    marginBottom: 10,
+  },
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F5F5F5",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    flex: 1,
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
   },
   scrollContainer: {
     flexGrow: 1,
