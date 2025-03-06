@@ -16,7 +16,20 @@ export default function Map() {
 
 
 
-<MapView style={styles.map} />
+<MapView 
+  style={styles.map} 
+  // showsMyLocationButton={true}
+  showsUserLocation={true}
+  
+  // Initial Location set to UPRM
+  // TODO: Update to user location always 
+  initialRegion={{
+    latitude: 18.2106,
+    longitude: -67.1396,
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009,
+  }}
+/>
 
 
     </View>
