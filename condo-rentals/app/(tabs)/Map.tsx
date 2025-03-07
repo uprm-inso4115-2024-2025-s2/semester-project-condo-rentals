@@ -4,18 +4,18 @@ import {
   StyleSheet} from "react-native"
 import CondoMarker from "@/components/CondoMarker";
 import { CondoMarkerProps } from "@/components/InterfaceMarker";
+import { MapListingsService } from "@/components/MapListingsService";
+import React, {useEffect, useState} from "react";
 
 export default function Map() {
 
-  let Example: CondoMarkerProps = {
-    id: 1,
-    name: "Condo Name",
-    description: "Condo Description",
-    location: {
-      latitude: 18.2106,
-      longitude: -67.1396,
-    }
-  }
+  const [listings, setListings] = useState<CondoMarkerProps[]>([]);
+  useEffect(() => {
+    setListings(new MapListingsService().listings);
+
+  }, [listings]);
+
+
 
   return (
     
@@ -43,7 +43,10 @@ export default function Map() {
           longitudeDelta: 0.009,
         }}
       >
-        <CondoMarker id={Example.id} name={Example.name} description={Example.description} location={Example.location}/>
+        {listings.map((listing, index) => (
+          <CondoMarker key={index} id={listing.id} name={listing.name} description={listing.description} location={listing.location}/>
+        ))}
+
         
         
 
