@@ -11,9 +11,9 @@ export default function Map() {
 
   const [listings, setListings] = useState<CondoMarkerProps[]>([]);
   useEffect(() => {
-    setListings(new MapListingsService().listings);
+    setListings(new MapListingsService().listing);
 
-  }, [listings]);
+  }, []);
 
 
 
