@@ -34,7 +34,7 @@ export class MapListingsService {
                 description: "Condo Description",
                 location: {
                   latitude: 18.2106,
-                  longitude: -67.1396,
+                  longitude: -67.1496,
                 }
             },
             {
