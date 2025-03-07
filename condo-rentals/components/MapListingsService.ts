@@ -7,7 +7,7 @@ export class MapListingsService {
 
     constructor() {
 
-        
+
 
         this.listings = [
             {
@@ -25,6 +25,24 @@ export class MapListingsService {
                 description: "Condo Description",
                 location: {
                   latitude: 18.2006,
+                  longitude: -67.1396,
+                }
+            },
+            {
+                id: 3,
+                name: "Condo 3",
+                description: "Condo Description",
+                location: {
+                  latitude: 18.2106,
+                  longitude: -67.1396,
+                }
+            },
+            {
+                id: 4,
+                name: "Condo 4",
+                description: "Condo Description",
+                location: {
+                  latitude: 18.2116,
                   longitude: -67.1396,
                 }
             }
