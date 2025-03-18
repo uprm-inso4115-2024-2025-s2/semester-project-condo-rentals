@@ -3,7 +3,7 @@ import React from "react";
 
 // App starts here
 const StartPage = () => {
-  return <Redirect href="/(tabs)/Home" />;
+  return <Redirect href="/(tabs)/Landing" />;
 };
 
 export default StartPage;

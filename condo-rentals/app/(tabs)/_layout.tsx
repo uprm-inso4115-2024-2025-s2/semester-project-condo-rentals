@@ -8,6 +8,16 @@ const Layout = () => {
     <View style={{ flex: 1 }}>
       <Tabs>
 
+
+      <Tabs.Screen
+          name="Landing"
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="star" color={color} size={size} />
+            ),
+          }}
+        />
         <Tabs.Screen
           name="Home"
           options={{
