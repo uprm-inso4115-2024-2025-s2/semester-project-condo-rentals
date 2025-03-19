@@ -5,18 +5,45 @@ import {
 import CondoMarker from "@/components/CondoMarker";
 import { CondoMarkerProps } from "@/components/InterfaceMarker";
 import { MapListingsService } from "@/components/MapListingsService";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
+import * as Location from "expo-location";
 
 
 export default function Map() {
 
   const [listings, setListings] = useState<CondoMarkerProps[]>([]);
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const mapRef = useRef<MapView>(null)
+
   useEffect(() => {
     setListings(new MapListingsService().listing);
 
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if(status != 'granted') {
+        return;
+      }
+      let userLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        timeInterval: 5,
+      });
+      setLocation(userLocation);
+    }) ();
+  }, []);
 
+  const goToCurrentLocation = async () => {
+    if(location && mapRef.current) {
+      mapRef.current.animateCamera({
+        center: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+      });
+    }
+  };
 
   return (
     
@@ -31,6 +58,7 @@ export default function Map() {
 
 
       <MapView 
+        ref={mapRef}
         style={styles.map} 
         // showsMyLocationButton={true}
         showsUserLocation={true}
@@ -54,7 +82,7 @@ export default function Map() {
         
       </MapView>
 
-    <TouchableOpacity style={styles.centerbutton}>
+    <TouchableOpacity style={styles.centerbutton} onPress={goToCurrentLocation}>
       <Image 
       source={require("../../assets/images/Condo Rental Assets/Condo_UserLocation.png")}
       style={styles.buttonImage} 
