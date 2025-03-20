@@ -8,7 +8,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 const { width } = Dimensions.get('window');
 
-const Data = [
+const InitData = [
   {
       id: 1,
       name: "Condo Name",
@@ -58,7 +58,7 @@ const Data = [
 export default function Map() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService())
+  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(InitData))
   const [listings, setListings] = useState<CondoMarkerProps[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [townQueary, setTown] = useState(" ");
@@ -67,6 +67,9 @@ export default function Map() {
   
   function filterData(Object:MapListingsService, param:string): void{
     if(param === " "){
+      Object.setListing(InitData)
+      setListingService(Object)
+
       return
     }
 
@@ -151,13 +154,9 @@ export default function Map() {
           { transform: [{ translateX: menuTranslateX }] },
         ]}
       >
-        {/* <TouchableOpacity style={styles.menuCloseButton} onPress={toggleMenu}>
-          <Text>Close</Text>
+        {/* <TouchableOpacity style={styles.} onPress={toggleMenu}>
+          <Text>Menu</Text>
         </TouchableOpacity> */}
-        {/* <Text>Menu Item 1</Text>
-        <Text>Menu Item 2</Text>
-        <Text>Menu Item 3</Text> */}
-        {/* Add your menu items here */}
       </Animated.View>
 
       <TouchableOpacity style={styles.menuToggleButton} onPress={toggleMenu}>

@@ -5,7 +5,8 @@ export class MapListingsService {
     listings: CondoMarkerProps[] = [];
 
 
-    constructor() {      
+    constructor(data: CondoMarkerProps[]) {
+        this.listings = data      
     }
 
 
