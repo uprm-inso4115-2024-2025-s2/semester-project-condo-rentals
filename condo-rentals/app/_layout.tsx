@@ -12,6 +12,10 @@ const StackLayout = () => {
   const router = useRouter();
 
   useEffect(() => {
+
+    supabase.auth.signOut().then(() => {
+      setSession(null);
+    });
     // Fetch session on mount
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -33,7 +37,7 @@ const StackLayout = () => {
       if (session) {
         router.replace('/(tabs)/Listings'); // Redirect to main app if logged in
       } else {
-        router.replace('/auth/index'); // Redirect to login screen if not logged in
+        router.replace('/auth'); // Redirect to login screen if not logged in
       }
     }
   }, [session, loading]);
@@ -49,7 +53,7 @@ const StackLayout = () => {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ title: "" }} />
-      <Stack.Screen name="auth" options={{ title: "Authentication" }} />
+      <Stack.Screen name="auth/index" options={{ title: "Authentication" }} />
     </Stack>
   );
 };
