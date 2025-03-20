@@ -15,7 +15,7 @@ const InitData = [
   {
     id: 1,
     name: "Condo 1",
-    description: "Condo Description",
+    description: "Cabo Rojo",
     location: {
       latitude: 18.2106,
       longitude: -67.1396,
@@ -27,7 +27,7 @@ const InitData = [
 {
     id: 2,
     name: "Condo 2",
-    description: "Condo Description",
+    description: "Ponce",
     location: {
       latitude: 18.2006,
       longitude: -67.1396,
@@ -39,7 +39,7 @@ const InitData = [
 {
     id: 3,
     name: "Condo 3",
-    description: "Condo Description",
+    description: "Mayaguez",
     location: {
       latitude: 18.2106,
       longitude: -67.1496,
