@@ -7,4 +7,7 @@ export interface CondoMarkerProps {
         longitude: number;
     };
     town: string;
+    price: number;
+    imageUrl: string;
+
 }

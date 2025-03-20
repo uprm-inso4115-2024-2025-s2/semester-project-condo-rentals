@@ -4,12 +4,11 @@ export class MapListingsService {
 
     listings: CondoMarkerProps[] = [];
 
-
     constructor(data: CondoMarkerProps[]) {
         this.listings = data      
+
+
     }
-
-
     get listing() {
         return this.listings;
     }

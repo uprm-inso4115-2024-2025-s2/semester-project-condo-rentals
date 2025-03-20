@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function LandingPage() {
@@ -7,20 +7,63 @@ export default function LandingPage() {
 
     return (
         <View style={styles.container}>
-            
-            <Text style={styles.title}>Find Your Perfect Condo</Text>
-            <Text style={styles.subtitle}>Search through thousands of rental properties</Text>
-
-            <View style={styles.searchContainer}>
-                <TextInput style={styles.searchInput} placeholder="Location" placeholderTextColor="#000"/>
-                <TouchableOpacity onPress={() => router.push("/Profile")} style={styles.searchButton}>
-                    <Text style={styles.searchButtonText}>Search</Text>
-                </TouchableOpacity>
+            {/* Header */}
+            <View style={styles.header}>
+                <View style={styles.headerButtons}>
+                    <TouchableOpacity onPress={() => router.push("/Profile")} style={styles.headerButton}>
+                        <Text style={styles.headerButtonText}>Log In</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => router.push("/Profile")} style={styles.headerButton}>
+                        <Text style={styles.headerButtonText}>Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
 
-            <TouchableOpacity onPress={() => router.push("/Profile")} style={[styles.button, styles.signInButton]}>
-                <Text style={styles.buttonText}>Sign In / Sign Up</Text>
-            </TouchableOpacity>
+            {/* Body */}
+            <ScrollView contentContainerStyle={styles.content} style={styles.scrollView}>
+                <Image source={require('../../assets/images/Condo Rental Assets/Condo_Logo.png')} style={styles.logo} />
+                
+                <Text style={styles.title}>Find Your Perfect Condo</Text>
+                <Text style={styles.subtitle}>Search through thousands of rental properties</Text>
+
+                {/* Search Section */}
+                <View style={styles.searchContainer}>
+                    <TextInput style={styles.searchInput} placeholder="Enter location" placeholderTextColor="#000"/>
+                    <TouchableOpacity onPress={() => router.push("/Profile")} style={styles.searchButton}>
+                        <Text style={styles.searchButtonText}>Search</Text>
+                    </TouchableOpacity>
+                </View>
+                
+                {/* Mission Section */}
+                {/* Learn More section - future task*/}
+                <View style={styles.trialSection}>
+                    <Text style={styles.trialTitle}>Our Mission</Text>
+                    <Text style={styles.trialText}>At Condo Rentals, we aim to connect renters with their dream condos effortlessly. With a vast selection of premium properties, we make finding the perfect home easier than ever.</Text>
+                    <TouchableOpacity onPress={() => router.push("/LearnMore")} style={styles.trialButton}>
+                        <Text style={styles.trialButtonText}>Learn More</Text>
+                    </TouchableOpacity>
+                </View>
+                
+                {/* Sign In / Sign Up Button */}
+                <TouchableOpacity onPress={() => router.push("/Profile")} style={[styles.button, styles.signInButton]}>
+                    <Text style={styles.buttonText}>Sign Up Today!</Text>
+                </TouchableOpacity>
+                
+
+                {/* Success Stories - future task*/}
+
+
+                {/* Footer */}
+                <View style={styles.footer}>
+                    <View style={styles.footerLinks}>
+                        <Text style={styles.footerLink}>Contact Us</Text>
+                        <Text style={styles.footerLink}>FAQs</Text>
+                        <Text style={styles.footerLink}>Privacy Policy</Text>
+                        <Text style={styles.footerLink}>Terms of Service</Text>
+                    </View>
+                    <Text style={styles.footerText}>© 2025 Condo Rentals. All rights reserved.</Text>
+                </View>
+            </ScrollView>
         </View>
     );
 }
@@ -28,28 +71,64 @@ export default function LandingPage() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#FFFFFF",
+    },
+
+    header: {
+        width: "100%",
+        padding: 20,
+        backgroundColor: "#E3F2FD",
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+        marginTop: 50,
+    },
+
+    headerImage: {
+        width: 50,
+        height: 50,
+        marginLeft: 15,
+    },
+
+    headerButtons: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 80,
+    },
+
+    headerButton: {
+        backgroundColor: "#1565C0",
+        padding: 12,
+        borderRadius: 10,
+        marginLeft: 10,
+    },
+
+    headerButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+    },
+
+    content: {
+        flexGrow: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#FFFFFF",
         padding: 20,
     },
-    logo: {
-        width: 120,
-        height: 120,
-        marginBottom: 20,
-    },
+
     title: {
         fontSize: 28,
         fontWeight: "bold",
-        color: "#0E4E78",
+        color: "#0D47A1",
         marginBottom: 5,
     },
+
     subtitle: {
         fontSize: 16,
-        color: "#268DD0",
+        color: "#42A5F5",
         marginBottom: 20,
         textAlign: "center",
     },
+
     searchContainer: {
         flexDirection: "row",
         width: "90%",
@@ -59,34 +138,105 @@ const styles = StyleSheet.create({
         alignItems: "center",
         padding: 5,
     },
+
     searchInput: {
         flex: 1,
         padding: 10,
         fontSize: 16,
     },
+
     searchButton: {
-        backgroundColor: "#0E4E78",
+        backgroundColor: "#0D47A1",
         padding: 10,
         borderRadius: 8,
     },
+
     searchButtonText: {
         color: "#FFFFFF",
         fontWeight: "bold",
     },
+
+    trialSection: {
+        marginTop: 50,
+        padding: 15,
+        backgroundColor: "#BBDEFB",
+        borderRadius: 10,
+        alignItems: "center",
+    },
+
+    trialTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 5,
+    },
+
+    trialText: {
+        fontSize: 16,
+        textAlign: "center",
+        marginBottom: 10,
+    },
+
+    trialButton: {
+        backgroundColor: "#1565C0",
+        padding: 10,
+        borderRadius: 5,
+    },
+
+    trialButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+    },
+
+    footer: {
+        width: "150%",
+        padding: 15,
+        backgroundColor: "#1565C0",
+        alignItems: "center",
+        marginTop: 20,
+    },
+
+    footerText: {
+        color: "#fff",
+        fontSize: 14,
+    },
+
+    footerLinks: {
+        marginBottom: 5,
+    },
+
+    footerLink: {
+        color: "#fff",
+        fontSize: 16,
+        marginBottom: 5,
+        textAlign: "center",
+    },
+
+    signInButton: {
+        backgroundColor: "#42A5F5",
+        marginTop: 20,
+    },
+
     button: {
-        backgroundColor: "#268DD0",
         padding: 15,
         borderRadius: 8,
         width: "80%",
         alignItems: "center",
         marginBottom: 15,
     },
+    
     buttonText: {
         color: "#FFFFFF",
         fontWeight: "bold",
         fontSize: 16,
     },
-    signInButton: {
-        backgroundColor: "#64E2E6",
+
+    scrollView: {
+        width: "100%",
+    },
+
+    logo: {
+        width: 400,
+        height: 280,
+        marginBottom: 20,
     },
 });

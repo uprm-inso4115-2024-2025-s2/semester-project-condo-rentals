@@ -1,4 +1,5 @@
-import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet} from "react-native";
+
+import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet, ScrollView} from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import MapView from 'react-native-maps';
 import * as Location from "expo-location";
@@ -6,52 +7,48 @@ import CondoMarker from "@/components/CondoMarker";
 import { CondoMarkerProps } from "@/components/InterfaceMarker";
 import { MapListingsService } from "@/components/MapListingsService";
 import React, { useEffect, useState, useRef } from "react";
+import CondoCard from "@/components/CondoCard"; // Import the CondoCard component
 
 const { width } = Dimensions.get('window');
 
 const InitData = [
   {
-      id: 1,
-      name: "Condo Name",
-      description: "Mayaguez",
-      location: {
-        latitude: 18.2106,
-        longitude: -67.1396,
-      },
-      town: "Mayaguez"
-  },
-  {
-      id: 2,
-      name: "Condo 2",
-      description: "Ponce",
-      location: {
-        latitude: 18.2006,
-        longitude: -67.1396,
-      },
-      town: "Ponce"
-  },
-  {
-      id: 3,
-      name: "Condo 3",
-      description: "Cabo Rojo",
-      location: {
-        latitude: 18.2106,
-        longitude: -67.1496,
-      },
-      town: "Cabo Rojo"
-  },
-  {
-      id: 4,
-      name: "Condo 4",
-      description: "San German",
-      location: {
-        latitude: 18.2116,
-        longitude: -67.1396,
-      },
-      town: "San German"
-  }
+    id: 1,
+    name: "Condo 1",
+    description: "Condo Description",
+    location: {
+      latitude: 18.2106,
+      longitude: -67.1396,
+    },
+    town: "Cabo Rojo", 
+    price: 150,
+    imageUrl: "https://example.com/condo1.jpg",
+},
+{
+    id: 2,
+    name: "Condo 2",
+    description: "Condo Description",
+    location: {
+      latitude: 18.2006,
+      longitude: -67.1396,
+    },
+    town: "Ponce", 
+    price: 150,
+    imageUrl: "https://example.com/condo1.jpg",
+},
+{
+    id: 3,
+    name: "Condo 3",
+    description: "Condo Description",
+    location: {
+      latitude: 18.2106,
+      longitude: -67.1496,
+    },
+    town: "Mayaguez",                
+    price: 150,
+    imageUrl: "https://example.com/condo1.jpg",
+},
 ];
-
 
 
 
@@ -91,12 +88,11 @@ export default function Map() {
   }
 
 
-
   useEffect(() => {
     async function getCurrentLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
@@ -128,20 +124,50 @@ export default function Map() {
     outputRange: [-width * 0.7, 0],
   });
 
+  const [visibleRegion, setVisibleRegion] = useState({
+    latitude: 18.2106,
+    longitude: -67.1396,
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009,
+  });
+
+  
+  const getVisibleListings = (listings: CondoMarkerProps[], region: any) => {
+    return listings.filter((listing) => {
+      const { latitude, longitude } = listing.location;
+      return (
+        latitude >= region.latitude - region.latitudeDelta / 2 &&
+        latitude <= region.latitude + region.latitudeDelta / 2 &&
+        longitude >= region.longitude - region.longitudeDelta / 2 &&
+        longitude <= region.longitude + region.longitudeDelta / 2
+      );
+    });
+  };
+
+
+  const visibleListings = getVisibleListings(listings, visibleRegion);
+
+
   return (
     <View style={{ flex: 1 }}>
       <MapView
         style={styles.map}
         showsUserLocation={true}
-        initialRegion={{
-          latitude: 18.2106,
-          longitude: -67.1396,
-          latitudeDelta: 0.009,
-          longitudeDelta: 0.009,
-        }}
+        initialRegion={visibleRegion}
+        onRegionChangeComplete={(region) => setVisibleRegion(region)}
+
       >
         {listings.map((listing, index) => (
-          <CondoMarker key={index} id={listing.id} name={listing.name} description={listing.description} location={listing.location} town={listing.town} />
+          <CondoMarker
+            key={index}
+            id={listing.id}
+            name={listing.name}
+            description={listing.description}
+            location={listing.location}
+            price={listing.price}
+            imageUrl={listing.imageUrl}
+            town={listing.town}
+          />
         ))}
       </MapView>
 
@@ -151,7 +177,6 @@ export default function Map() {
           style={styles.buttonImage}
         />
       </TouchableOpacity>
-
       <Animated.View
         style={[
           styles.sideMenu,
@@ -182,6 +207,20 @@ export default function Map() {
       <TouchableOpacity style={styles.menuToggleButton} onPress={toggleMenu}>
         <Text>Menu</Text>
       </TouchableOpacity>
+      
+      <ScrollView horizontal style={styles.cardList}>
+        {visibleListings.map((listing) => (
+          <CondoCard
+            key={listing.id}
+            id={listing.name}
+            name={listing.name}
+            description={listing.description}
+            price={listing.price}
+            imageUrl={listing.imageUrl}
+            onPress={() => console.log("Condo pressed:", listing.id)}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -189,11 +228,11 @@ export default function Map() {
 const styles = StyleSheet.create({
   map: {
     width: "100%",
-    height: "100%",
+    height: "70%",
   },
   centerbutton: {
     position: "absolute",
-    bottom: "12%",
+    bottom: "30%",
     right: 20,
     backgroundColor: "white",
     width: 45,
@@ -227,6 +266,15 @@ const styles = StyleSheet.create({
     zIndex:11,
   },
   menuText: { fontSize: 16, fontWeight: "bold", marginTop: 100 },
-  confirmButton: { backgroundColor: "lightblue", padding: 10, borderRadius: 5, marginTop: 200, alignItems: "center" }
+
+  confirmButton: { backgroundColor: "lightblue", padding: 10, borderRadius: 5, marginTop: 200, alignItems: "center" },
+  cardList: {
+    position: "absolute",
+    bottom: 10,
+    left: 0,
+    right: 0,
+    paddingHorizontal: 10,
+  },
   
 });
+
