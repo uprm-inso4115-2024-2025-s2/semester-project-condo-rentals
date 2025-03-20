@@ -8,12 +8,82 @@ import React, { useEffect, useState, useRef } from "react";
 
 const { width } = Dimensions.get('window');
 
+const Data = [
+  {
+      id: 1,
+      name: "Condo Name",
+      description: "Condo Description",
+      location: {
+        latitude: 18.2106,
+        longitude: -67.1396,
+      },
+      town: "Mayaguez"
+  },
+  {
+      id: 2,
+      name: "Condo 2",
+      description: "Condo Description",
+      location: {
+        latitude: 18.2006,
+        longitude: -67.1396,
+      },
+      town: "Ponce"
+  },
+  {
+      id: 3,
+      name: "Condo 3",
+      description: "Condo Description",
+      location: {
+        latitude: 18.2106,
+        longitude: -67.1496,
+      },
+      town: "Cabo Rojo"
+  },
+  {
+      id: 4,
+      name: "Condo 4",
+      description: "Condo Description",
+      location: {
+        latitude: 18.2116,
+        longitude: -67.1396,
+      },
+      town: "San German"
+  }
+];
+
+
+
+
+
 export default function Map() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService())
   const [listings, setListings] = useState<CondoMarkerProps[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [townQueary, setTown] = useState(" ");
   const animation = useRef(new Animated.Value(0)).current;
+
+  
+  function filterData(Object:MapListingsService, param:string): void{
+    if(param === " "){
+      return
+    }
+
+    // This should be done with SQL but its being done with JavaScript for now
+    let Data: CondoMarkerProps[] = []
+    for (let i=0;i<Object.listing.length;i++){
+      if (Object.listing[i].town.includes(param)){
+        Data.push(Object.listing[i]);
+      }
+    }
+
+    Object.setListing(Data)
+    setListingService(Object)
+
+  }
+
+
 
   useEffect(() => {
     async function getCurrentLocation() {
@@ -31,8 +101,11 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    setListings(new MapListingsService().listing);
-  }, []);
+
+    filterData(ListingService,townQueary);
+
+    setListings(ListingService.listing);
+  }, [townQueary]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
