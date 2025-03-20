@@ -79,9 +79,9 @@ export default function Map() {
 
     // This should be done with SQL but its being done with JavaScript for now
     let Data: CondoMarkerProps[] = []
-    for (let i=0;i<Object.listing.length;i++){
-      if (Object.listing[i].town.includes(param)){
-        Data.push(Object.listing[i]);
+    for (let i=0;i<InitData.length;i++){
+      if (InitData[i].town.includes(param)){
+        Data.push(InitData[i]);
       }
     }
 
@@ -219,20 +219,14 @@ const styles = StyleSheet.create({
   },
   menuToggleButton: {
     position: 'absolute',
-    top: 40,
+    top: 60,
     left: 20,
     backgroundColor: 'lightblue',
     padding: 10,
     borderRadius: 5,
     zIndex:11,
   },
-  menuCloseButton:{
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        padding: 5,
-  },
   menuText: { fontSize: 16, fontWeight: "bold", marginTop: 100 },
-  confirmButton: { backgroundColor: "lightblue", padding: 10, borderRadius: 5, marginTop: 10, alignItems: "center" }
+  confirmButton: { backgroundColor: "lightblue", padding: 10, borderRadius: 5, marginTop: 200, alignItems: "center" }
   
 });
