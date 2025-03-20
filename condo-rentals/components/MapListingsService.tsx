@@ -12,12 +12,14 @@ export class MapListingsService {
         this.listings = [
             {
                 id: 1,
-                name: "Condo Name",
+                name: "Condo 1",
                 description: "Condo Description",
                 location: {
                   latitude: 18.2106,
                   longitude: -67.1396,
-                }
+                },
+                price: 150,
+                imageUrl: "https://example.com/condo1.jpg",
             },
             {
                 id: 2,
@@ -26,7 +28,9 @@ export class MapListingsService {
                 location: {
                   latitude: 18.2006,
                   longitude: -67.1396,
-                }
+                },
+                price: 150,
+                imageUrl: "https://example.com/condo1.jpg",
             },
             {
                 id: 3,
@@ -35,17 +39,19 @@ export class MapListingsService {
                 location: {
                   latitude: 18.2106,
                   longitude: -67.1496,
-                }
+                },                
+                price: 150,
+                imageUrl: "https://example.com/condo1.jpg",
             },
-            {
-                id: 4,
-                name: "Condo 4",
-                description: "Condo Description",
-                location: {
-                  latitude: 18.2116,
-                  longitude: -67.1396,
-                }
-            }
+            // {
+            //     id: 4,
+            //     name: "Condo 4",
+            //     description: "Condo Description",
+            //     location: {
+            //       latitude: 18.2116,
+            //       longitude: -67.1396,
+            //     }
+            // }
         ];
     }
 
