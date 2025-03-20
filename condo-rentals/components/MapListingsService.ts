@@ -7,8 +7,6 @@ export class MapListingsService {
 
     constructor() {
 
-
-
         this.listings = [
             {
                 id: 1,
@@ -17,7 +15,8 @@ export class MapListingsService {
                 location: {
                   latitude: 18.2106,
                   longitude: -67.1396,
-                }
+                },
+                town: "Mayaguez"
             },
             {
                 id: 2,
@@ -26,7 +25,8 @@ export class MapListingsService {
                 location: {
                   latitude: 18.2006,
                   longitude: -67.1396,
-                }
+                },
+                town: "Ponce"
             },
             {
                 id: 3,
@@ -35,7 +35,8 @@ export class MapListingsService {
                 location: {
                   latitude: 18.2106,
                   longitude: -67.1496,
-                }
+                },
+                town: "Cabo Rojo"
             },
             {
                 id: 4,
@@ -44,7 +45,8 @@ export class MapListingsService {
                 location: {
                   latitude: 18.2116,
                   longitude: -67.1396,
-                }
+                },
+                town: "San German"
             }
         ];
     }
@@ -56,5 +58,8 @@ export class MapListingsService {
 
     addListing(listing: CondoMarkerProps) {
         this.listings.push(listing);
+    }
+    setListing(listing: CondoMarkerProps[]){
+        this.listings = listing
     }
 }

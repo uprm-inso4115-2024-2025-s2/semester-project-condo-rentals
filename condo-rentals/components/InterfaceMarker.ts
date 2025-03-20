@@ -5,5 +5,6 @@ export interface CondoMarkerProps {
     location: {
         latitude: number;
         longitude: number;
-    }
+    };
+    town: string;
 }
