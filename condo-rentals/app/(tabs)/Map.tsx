@@ -1,4 +1,5 @@
-import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet} from "react-native";
+import DropDownPicker from 'react-native-dropdown-picker';
 import MapView from 'react-native-maps';
 import * as Location from "expo-location";
 import CondoMarker from "@/components/CondoMarker";
@@ -12,7 +13,7 @@ const InitData = [
   {
       id: 1,
       name: "Condo Name",
-      description: "Condo Description",
+      description: "Mayaguez",
       location: {
         latitude: 18.2106,
         longitude: -67.1396,
@@ -22,7 +23,7 @@ const InitData = [
   {
       id: 2,
       name: "Condo 2",
-      description: "Condo Description",
+      description: "Ponce",
       location: {
         latitude: 18.2006,
         longitude: -67.1396,
@@ -32,7 +33,7 @@ const InitData = [
   {
       id: 3,
       name: "Condo 3",
-      description: "Condo Description",
+      description: "Cabo Rojo",
       location: {
         latitude: 18.2106,
         longitude: -67.1496,
@@ -42,7 +43,7 @@ const InitData = [
   {
       id: 4,
       name: "Condo 4",
-      description: "Condo Description",
+      description: "San German",
       location: {
         latitude: 18.2116,
         longitude: -67.1396,
@@ -61,13 +62,16 @@ export default function Map() {
   const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(InitData))
   const [listings, setListings] = useState<CondoMarkerProps[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropOpen, setIsDropOpen] = useState(false);
   const [townQueary, setTown] = useState(" ");
+  const [townFilter, setTownFilter] = useState(" ");
   const animation = useRef(new Animated.Value(0)).current;
 
   
   function filterData(Object:MapListingsService, param:string): void{
     if(param === " "){
       Object.setListing(InitData)
+      console.log(" im empty");
       setListingService(Object)
 
       return
@@ -108,7 +112,7 @@ export default function Map() {
     filterData(ListingService,townQueary);
 
     setListings(ListingService.listing);
-  }, [townQueary]);
+  }, [townFilter]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -154,9 +158,25 @@ export default function Map() {
           { transform: [{ translateX: menuTranslateX }] },
         ]}
       >
-        {/* <TouchableOpacity style={styles.} onPress={toggleMenu}>
-          <Text>Menu</Text>
-        </TouchableOpacity> */}
+        <Text style={styles.menuText}>Select Town:</Text>
+        <DropDownPicker
+            open={isMenuOpen}
+            value={townQueary}
+            items={[
+              { label: "All", value: " " },
+              { label: "Mayaguez", value: "Mayaguez" },
+              { label: "Ponce", value: "Ponce" },
+              { label: "Cabo Rojo", value: "Cabo Rojo" },
+              { label: "San German", value: "San German" }
+            ]}
+            setOpen={setIsMenuOpen}
+            setValue={setTown}
+            placeholder="Select Town"
+            containerStyle={{ marginTop: 10 }}
+          />
+        <TouchableOpacity style={styles.confirmButton} onPress={() => setTownFilter(townQueary)}>
+          <Text>Confirm</Text>
+        </TouchableOpacity>
       </Animated.View>
 
       <TouchableOpacity style={styles.menuToggleButton} onPress={toggleMenu}>
@@ -206,10 +226,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     zIndex:11,
   },
-    menuCloseButton:{
+  menuCloseButton:{
         position: 'absolute',
         top: 10,
         right: 10,
         padding: 5,
-    }
+  },
+  menuText: { fontSize: 16, fontWeight: "bold", marginTop: 100 },
+  confirmButton: { backgroundColor: "lightblue", padding: 10, borderRadius: 5, marginTop: 10, alignItems: "center" }
+  
 });
