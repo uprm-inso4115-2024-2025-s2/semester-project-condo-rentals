@@ -8,6 +8,7 @@ const Layout = () => {
     <View style={{ flex: 1 }}>
       <Tabs>
 
+
       <Tabs.Screen
           name="Landing"
           options={{
@@ -17,13 +18,21 @@ const Layout = () => {
             ),
           }}
         />
-
+        <Tabs.Screen
+          name="Home"
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
         <Tabs.Screen
           name="Listings"
           options={{
             headerShown: false,
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" color={color} size={size} />
+              <Ionicons name="list" color={color} size={size} />
             ),
           }}
         />

@@ -6,4 +6,6 @@ export interface CondoMarkerProps {
         latitude: number;
         longitude: number;
     }
+    price: number;
+    imageUrl: string;
 }
