@@ -32,17 +32,39 @@ export default function Map() {
     setListings(new MapListingsService().listing);
   }, []);
 
+
+  const [visibleRegion, setVisibleRegion] = useState({
+    latitude: 18.2106,
+    longitude: -67.1396,
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009,
+  });
+
+  
+  const getVisibleListings = (listings: CondoMarkerProps[], region: any) => {
+    return listings.filter((listing) => {
+      const { latitude, longitude } = listing.location;
+      return (
+        latitude >= region.latitude - region.latitudeDelta / 2 &&
+        latitude <= region.latitude + region.latitudeDelta / 2 &&
+        longitude >= region.longitude - region.longitudeDelta / 2 &&
+        longitude <= region.longitude + region.longitudeDelta / 2
+      );
+    });
+  };
+
+
+  const visibleListings = getVisibleListings(listings, visibleRegion);
+
+
   return (
     <View style={{ flex: 1 }}>
       <MapView
         style={styles.map}
         showsUserLocation={true}
-        initialRegion={{
-          latitude: 18.2106,
-          longitude: -67.1396,
-          latitudeDelta: 0.009,
-          longitudeDelta: 0.009,
-        }}
+        initialRegion={visibleRegion}
+        onRegionChangeComplete={(region) => setVisibleRegion(region)}
+
       >
         {listings.map((listing, index) => (
           <CondoMarker
@@ -51,6 +73,8 @@ export default function Map() {
             name={listing.name}
             description={listing.description}
             location={listing.location}
+            price={listing.price}
+            imageUrl={listing.imageUrl}
           />
         ))}
       </MapView>
@@ -62,20 +86,20 @@ export default function Map() {
         />
       </TouchableOpacity>
 
-      {/* Add CondoCard List */}
-      <ScrollView horizontal style={styles.cardList}>
-        {listings.map((listing) => (
-          <CondoCard
-            key={listing.id}
-            id={listing.id}
-            name={listing.name}
-            description={listing.description}
-            price={listing.price}
-            imageUrl={listing.imageUrl}
-            onPress={() => console.log("Condo pressed:", listing.id)}
-          />
-        ))}
-      </ScrollView>
+      
+<ScrollView horizontal style={styles.cardList}>
+  {visibleListings.map((listing) => (
+    <CondoCard
+      key={listing.id}
+      id={listing.id}
+      name={listing.name}
+      description={listing.description}
+      price={listing.price}
+      imageUrl={listing.imageUrl}
+      onPress={() => console.log("Condo pressed:", listing.id)}
+    />
+  ))}
+</ScrollView>
     </View>
   );
 }
