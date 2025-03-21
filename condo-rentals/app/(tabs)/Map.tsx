@@ -1,5 +1,5 @@
 
-import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet, ScrollView} from "react-native";
+import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet, ScrollView, Alert} from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import MapView from 'react-native-maps';
 import * as Location from "expo-location";
@@ -92,7 +92,10 @@ export default function Map() {
     async function getCurrentLocation() {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        setErrorMsg('Permission to access location was denied');
+        Alert.alert("Location Access Denied", "Please enable location permissions in settings.", [
+          { text: "OK" }
+        ]);
         return;
       }
 
@@ -104,11 +107,13 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-
-    filterData(ListingService,townQueary);
-
-    setListings(ListingService.listing);
-  }, [townFilter]);
+    try {
+      filterData(ListingService, townQueary);
+      setListings(ListingService.listing);
+    } catch (error) {
+      console.error("Error filtering data:", error);
+    }
+  }, [townQueary]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -157,8 +162,10 @@ export default function Map() {
         onRegionChangeComplete={(region) => setVisibleRegion(region)}
 
       >
-        {listings.map((listing, index) => (
-          <CondoMarker
+        {listings.length > 0 ? (
+          listings.map((listing, index) => (
+            
+            <CondoMarker
             key={index}
             id={listing.id}
             name={listing.name}
@@ -168,7 +175,10 @@ export default function Map() {
             imageUrl={listing.imageUrl}
             town={listing.town}
           />
-        ))}
+          ))
+        ) : (
+          <Text style={styles.errorText}>No listings found</Text>
+        )}
       </MapView>
 
       <TouchableOpacity style={styles.centerbutton}>
@@ -275,6 +285,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 10,
   },
+  errorText: { position: "absolute", top: 50, left: 20, color: "red" },
   
 });
 
