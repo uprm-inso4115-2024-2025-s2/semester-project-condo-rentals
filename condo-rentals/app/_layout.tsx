@@ -12,7 +12,6 @@ const StackLayout = () => {
   const router = useRouter();
 
   useEffect(() => {
-
     supabase.auth.signOut().then(() => {
       setSession(null);
     });

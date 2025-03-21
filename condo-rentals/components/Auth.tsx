@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View, TextInput } from 'react-native'
-import { supabase } from '../backend/supabase'
-import { Button, Input } from '@rneui/themed'
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { supabase } from '../backend/supabase'; // ✅ Ensure this matches your working import
+import { Button, Input } from '@rneui/themed';
 import { useRouter } from 'expo-router';
 
 export default function Auth() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function signInWithEmail() {
@@ -18,12 +18,12 @@ export default function Auth() {
 
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
+      email,
+      password,
     });
 
     if (error) Alert.alert(error.message);
-    else router.replace('/(tabs)/Listings'); // Redirect on successful login
+    else router.replace('/(tabs)/Listings'); // ✅ Redirect to home page on login
 
     setLoading(false);
   }
@@ -36,8 +36,8 @@ export default function Auth() {
 
     setLoading(true);
     const { data: { session }, error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
+      email,
+      password,
     });
 
     if (error) Alert.alert(error.message);
@@ -48,19 +48,17 @@ export default function Auth() {
 
   async function signInAsGuest() {
     setLoading(true);
-
     const { error } = await supabase.auth.signInAnonymously();
 
     if (error) {
       Alert.alert("Error", error.message);
     } else {
       Alert.alert("Success", "You have signed in as a guest!");
-      router.replace('/(tabs)/Listings'); // Redirect to main page
+      router.replace('/(tabs)/Listings'); // ✅ Redirect to home page for guests
     }
 
     setLoading(false);
   }
-
 
   return (
     <View style={styles.container}>
@@ -71,7 +69,7 @@ export default function Auth() {
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
-          autoCapitalize={'none'}
+          autoCapitalize="none"
         />
       </View>
       <View style={styles.verticallySpaced}>
@@ -80,22 +78,27 @@ export default function Auth() {
           leftIcon={{ type: 'font-awesome', name: 'lock' }}
           onChangeText={(text) => setPassword(text)}
           value={password}
-          secureTextEntry={true}
+          secureTextEntry
           placeholder="Password"
-          autoCapitalize={'none'}
+          autoCapitalize="none"
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
+        <Button title="Sign in" disabled={loading} onPress={signInWithEmail} />
       </View>
       <View style={styles.verticallySpaced}>
-        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+        <Button title="Sign up" disabled={loading} onPress={signUpWithEmail} />
       </View>
       <View style={styles.verticallySpaced}>
         <Button title="Sign in as Guest" disabled={loading} onPress={signInAsGuest} />
       </View>
+      <View style={styles.verticallySpaced}>
+        <TouchableOpacity onPress={() => router.push('/auth/reset')}>
+          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -111,4 +114,10 @@ const styles = StyleSheet.create({
   mt20: {
     marginTop: 20,
   },
-})
+  forgotPassword: {
+    color: 'blue',
+    textAlign: 'center',
+    marginTop: 10,
+    textDecorationLine: 'underline',
+  },
+});
