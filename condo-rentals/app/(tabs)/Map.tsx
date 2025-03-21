@@ -162,8 +162,10 @@ export default function Map() {
         onRegionChangeComplete={(region) => setVisibleRegion(region)}
 
       >
-        {listings.map((listing, index) => (
-          <CondoMarker
+        {listings.length > 0 ? (
+          listings.map((listing, index) => (
+            
+            <CondoMarker
             key={index}
             id={listing.id}
             name={listing.name}
@@ -173,7 +175,10 @@ export default function Map() {
             imageUrl={listing.imageUrl}
             town={listing.town}
           />
-        ))}
+          ))
+        ) : (
+          <Text style={styles.errorText}>No listings found</Text>
+        )}
       </MapView>
 
       <TouchableOpacity style={styles.centerbutton}>
@@ -280,6 +285,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 10,
   },
+  errorText: { position: "absolute", top: 50, left: 20, color: "red" },
   
 });
 
