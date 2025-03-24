@@ -8,8 +8,6 @@ import { CondoMarkerProps } from "@/components/InterfaceMarker";
 import { MapListingsService } from "@/components/MapListingsService";
 import React, { useEffect, useState, useRef } from "react";
 import CondoCard from "@/components/CondoCard"; // Import the CondoCard component
-import AddCondoListing from "@/components/addCondoListing";
-
 
 const { width } = Dimensions.get('window');
 
@@ -183,10 +181,6 @@ export default function Map() {
         )}
       </MapView>
 
-      <View style={styles.addCondoButtonContainer}>
-      <AddCondoListing />
-    </View>
-
       <TouchableOpacity style={styles.centerbutton}>
         <Image
           source={require("../../assets/images/Condo Rental Assets/Condo_UserLocation.png")}
@@ -291,16 +285,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: 10,
   },
-  addCondoButtonContainer: {
-    position: 'absolute',
-    top: 50,
-    left: 20,
-    zIndex: 1,
-    width: 40, // Added fixed width
-    height: 40, // Added fixed height
-    borderRadius: 10, // Added rounded corners (smaller value than width/2 for squared look)
-    overflow: 'hidden', // This ensures the content respects the border radius
-  },
-  errorText: { position: "absolute", top: 80, left: 20, color: "red" },
+  errorText: { position: "absolute", top: 50, left: 20, color: "red" },
+  
 });
 
