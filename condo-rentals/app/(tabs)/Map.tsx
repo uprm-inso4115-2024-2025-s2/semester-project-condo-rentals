@@ -1,4 +1,3 @@
-
 import { Text, TouchableOpacity, View, Image, Animated, Dimensions, StyleSheet, ScrollView, Alert} from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import MapView from 'react-native-maps';
@@ -60,6 +59,7 @@ export default function Map() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(InitData))
   const [listings, setListings] = useState<CondoMarkerProps[]>([]);
+  const mapRef = useRef<MapView>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropOpen, setIsDropOpen] = useState(false);
   const [townQueary, setTown] = useState(" ");
@@ -117,6 +117,32 @@ export default function Map() {
     }
   }, [townQueary]);
 
+  useEffect(() => {
+    (async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if(status != 'granted') {
+        return;
+      }
+      let userLocation = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        timeInterval: 5,
+      });
+      setLocation(userLocation);
+    }) ();
+  }, []);
+
+  const goToCurrentLocation = async () => {
+    if(location && mapRef.current) {
+      mapRef.current.animateCamera({
+        center: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+        altitude: 2000,
+        zoom: 15,
+      });
+    }
+  };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
     Animated.timing(animation, {
@@ -138,7 +164,6 @@ export default function Map() {
     longitudeDelta: 0.009,
   });
 
-  
   const getVisibleListings = (listings: CondoMarkerProps[], region: any) => {
     return listings.filter((listing) => {
       const { latitude, longitude } = listing.location;
@@ -158,6 +183,7 @@ export default function Map() {
   return (
     <View style={{ flex: 1 }}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         showsUserLocation={true}
         initialRegion={visibleRegion}
@@ -183,16 +209,17 @@ export default function Map() {
         )}
       </MapView>
 
-      <View style={styles.addCondoButtonContainer}>
+      <TouchableOpacity style={styles.userLocationButton} onPress={goToCurrentLocation}>
+        <Image 
+        source={require("../../assets/images/Condo Rental Assets/Condo_UserLocation.png")}
+        style={styles.buttonImage}
+        />
+      </TouchableOpacity>
+    
+    <View style={styles.addCondoButtonContainer}>
       <AddCondoListing />
     </View>
 
-      <TouchableOpacity style={styles.centerbutton}>
-        <Image
-          source={require("../../assets/images/Condo Rental Assets/Condo_UserLocation.png")}
-          style={styles.buttonImage}
-        />
-      </TouchableOpacity>
       <Animated.View
         style={[
           styles.sideMenu,
@@ -246,10 +273,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "70%",
   },
-  centerbutton: {
+  userLocationButton: {
     position: "absolute",
-    bottom: "30%",
-    right: 20,
+    bottom: "35%",
+    right: "5%",
     backgroundColor: "white",
     width: 45,
     height: 45,
