@@ -89,6 +89,27 @@ export default function Map() {
 
   }
 
+  const mapRef = useRef<MapView | null>(null); 
+
+  const centerMapOnUser = () => {
+    if (location && mapRef.current) {
+      const { latitude, longitude } = location.coords;
+
+      mapRef.current.animateToRegion(
+        {
+          latitude,
+          longitude,
+          latitudeDelta: 0.009,
+          longitudeDelta: 0.009,
+        },
+        1000 // duration in ms
+      );
+    } else {
+      Alert.alert("Location unavailable", "Make sure location permission is granted.");
+    }
+  };
+
+
 
   useEffect(() => {
     async function getCurrentLocation() {
@@ -183,7 +204,8 @@ export default function Map() {
   return (
     <View style={{ flex: 1 }}>
       <MapView
-        ref={mapRef}
+        ref = {mapRef}
+
         style={styles.map}
         showsUserLocation={true}
         initialRegion={visibleRegion}
@@ -219,6 +241,14 @@ export default function Map() {
     <View style={styles.addCondoButtonContainer}>
       <AddCondoListing />
     </View>
+
+    <TouchableOpacity style={styles.centerbutton} onPress={centerMapOnUser}>
+      <Image
+      source={require("../../assets/images/Condo Rental Assets/Condo_UserLocation.png")}
+      style={styles.buttonImage}
+      />
+    </TouchableOpacity>
+
 
       <Animated.View
         style={[
