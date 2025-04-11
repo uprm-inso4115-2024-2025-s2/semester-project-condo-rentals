@@ -56,10 +56,18 @@ export default function LandingPage() {
                 {/* Footer */}
                 <View style={styles.footer}>
                     <View style={styles.footerLinks}>
-                        <Text style={styles.footerLink}>Contact Us</Text>
-                        <Text style={styles.footerLink}>FAQs</Text>
-                        <Text style={styles.footerLink}>Privacy Policy</Text>
-                        <Text style={styles.footerLink}>Terms of Service</Text>
+                        <TouchableOpacity onPress={() => router.push("https://drive.google.com/file/d/1MQhsmHOi3r207C8i47w4aIdHYj2MhfDT/view?usp=sharing")}>
+                            <Text style={styles.footerLink}>Contact Us</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push("https://drive.google.com/file/d/1lLj3BfXZvmkjNqDfc2LqqnCYdKu5VPuv/view?usp=sharing")}>
+                            <Text style={styles.footerLink}>FAQs</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push("https://drive.google.com/file/d/1RX1DD6Jjs5f_JZTzRQup8L1GOXzqZz9q/view?usp=sharing")}>
+                            <Text style={styles.footerLink}>Privacy Policy</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.push("https://drive.google.com/file/d/1o6RgdlDkQgIgOQp1f6r8F6MIvPAcUCE5/view?usp=sharing")}>
+                            <Text style={styles.footerLink}>Terms of Service</Text>
+                        </TouchableOpacity>
                     </View>
                     <Text style={styles.footerText}>© 2025 Condo Rentals. All rights reserved.</Text>
                 </View>
