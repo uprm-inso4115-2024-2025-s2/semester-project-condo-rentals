@@ -1,13 +1,22 @@
 export interface CondoMarkerProps {
-    id: number;
-    name: string;
+    condo_id: number;
+    title: string;
     description: string;
-    location: {
-        latitude: number;
-        longitude: number;
-    };
-    town: string;
-    price: number;
-    imageUrl: string;
+    address: string;
+    city: string;
+    state_province: string;
+    country: string;
+    postal_code: string;
+    latitude: number;
+    longitude: number;
+    num_bedrooms: number;
+    num_bathrooms: number;
+    max_guests: number;
+    square_footage: number;
+    price_per_night: number;
+    is_available: boolean;
+    status: string;
+    host_name: string;
+
 
 }

@@ -8,6 +8,7 @@ import { MapListingsService } from "@/components/MapListingsService";
 import React, { useEffect, useState, useRef } from "react";
 import CondoCard from "@/components/CondoCard"; // Import the CondoCard component
 import AddCondoListing from "@/components/addCondoListing";
+import getAllProperties from "../../backend/controllers/propertyController"
 
 
 const { width } = Dimensions.get('window');
@@ -69,6 +70,11 @@ export default function Map() {
   
   function filterData(Object:MapListingsService, param:string): void{
     if(param === " "){
+
+      
+
+
+
       Object.setListing(InitData)
       console.log(" im empty");
       setListingService(Object)
