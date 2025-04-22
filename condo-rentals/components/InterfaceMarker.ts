@@ -17,6 +17,5 @@ export interface CondoMarkerProps {
     is_available: boolean;
     status: string;
     host_name: string;
-
-
+    image_url: string;
 }

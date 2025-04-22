@@ -13,44 +13,6 @@ import getAllProperties from "../../backend/controllers/propertyController"
 
 const { width } = Dimensions.get('window');
 
-const InitData = [
-  {
-    id: 1,
-    name: "Condo 1",
-    description: "Cabo Rojo",
-    location: {
-      latitude: 18.2106,
-      longitude: -67.1396,
-    },
-    town: "Cabo Rojo", 
-    price: 150,
-    imageUrl: "https://example.com/condo1.jpg",
-},
-{
-    id: 2,
-    name: "Condo 2",
-    description: "Ponce",
-    location: {
-      latitude: 18.2006,
-      longitude: -67.1396,
-    },
-    town: "Ponce", 
-    price: 150,
-    imageUrl: "https://example.com/condo1.jpg",
-},
-{
-    id: 3,
-    name: "Condo 3",
-    description: "Mayaguez",
-    location: {
-      latitude: 18.2106,
-      longitude: -67.1496,
-    },
-    town: "Mayaguez",                
-    price: 150,
-    imageUrl: "https://example.com/condo1.jpg",
-},
-];
 
 
 
@@ -75,6 +37,7 @@ export default function Map() {
 
 
 
+    
       Object.setListing(InitData)
       console.log(" im empty");
       setListingService(Object)
@@ -172,7 +135,8 @@ export default function Map() {
 
   const getVisibleListings = (listings: CondoMarkerProps[], region: any) => {
     return listings.filter((listing) => {
-      const { latitude, longitude } = listing.location;
+      const latitude = listing.latitude;
+      const longitude = listing.longitude;
       return (
         latitude >= region.latitude - region.latitudeDelta / 2 &&
         latitude <= region.latitude + region.latitudeDelta / 2 &&
@@ -201,13 +165,25 @@ export default function Map() {
             
             <CondoMarker
             key={index}
-            id={listing.id}
-            name={listing.name}
+            condo_id={listing.condo_id}
+            title={listing.title}
             description={listing.description}
-            location={listing.location}
-            price={listing.price}
-            imageUrl={listing.imageUrl}
-            town={listing.town}
+            address = {listing.address}
+            city = {listing.city}
+            state_province = {listing.state_province}
+            country = {listing.country}
+            postal_code = {listing.postal_code}
+            latitude =  {listing.latitude}
+            longitude = {listing.longitude}
+            num_bedrooms = {listing.num_bedrooms}
+            num_bathrooms = {listing.num_bathrooms}
+            max_guests = {listing.max_guests}
+            square_footage = {listing.square_footage}
+            price_per_night = {listing.price_per_night}
+            is_available  = {listing.is_available}
+            status = {listing.status}
+            host_name = {listing.host_name}
+            image_url = {listing.image_url}
           />
           ))
         ) : (
@@ -260,13 +236,13 @@ export default function Map() {
       <ScrollView horizontal style={styles.cardList}>
         {visibleListings.map((listing) => (
           <CondoCard
-            key={listing.id}
-            id={listing.name}
-            name={listing.name}
+            key={listing.condo_id}
+            id={listing.title}
+            name={listing.title}
             description={listing.description}
-            price={listing.price}
-            imageUrl={listing.imageUrl}
-            onPress={() => console.log("Condo pressed:", listing.id)}
+            price={listing.price_per_night}
+            imageUrl={listing.image_url}
+            onPress={() => console.log("Condo pressed:", listing.title)}
           />
         ))}
       </ScrollView>
