@@ -106,7 +106,6 @@ const Listings = () => {
             key={index}
             landlordName={listing.landlordName}
             priceLocation={`${listing.price} - ${listing.location}`}
-            imageUrl={listing.images[0]}
             onPress={() => setSelectedListing(listing)}
           />
         ))}
