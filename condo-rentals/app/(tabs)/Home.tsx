@@ -1,11 +1,22 @@
-import React from "react";
-import { View, Text, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, FlatList, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
+import { getNewestCondos } from "@/backend/queries/newest_condos";
 
 // Sample data
 const landlords = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
-const listings = [{ id: 1, image: "https://via.placeholder.com/300" }];
+type Listing = {
+  condo_id: number;
+  title: string;
+  image: string;
+  city: string;
+};
+
+interface BodyProps {
+  newListings: Listing[];
+}
+
 const categories = [
   { id: 1, name: "1 Bedroom", icon: "bed-outline" },
   { id: 2, name: "2 Bedrooms", icon: "bed" },
@@ -15,45 +26,81 @@ const categories = [
 const areas = ["Paris", "Terrace", "Trastalleres"];
 
 const Header = () => (
-  <View style={{ flexDirection: "row", justifyContent: "space-between", padding: 15 }}>
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      padding: 15,
+    }}
+  >
     <Icon name="person-circle-outline" size={30} />
     <Text style={{ fontSize: 22, fontWeight: "bold" }}>CondoRentals</Text>
     <View style={{ flexDirection: "row" }}>
-      <Icon name="notifications-outline" size={25} style={{ marginRight: 10 }} />
+      <Icon
+        name="notifications-outline"
+        size={25}
+        style={{ marginRight: 10 }}
+      />
       <Icon name="settings-outline" size={25} />
     </View>
   </View>
 );
 
-const Body = () => (
+const Body = ({ newListings }: BodyProps) => (
   <ScrollView showsVerticalScrollIndicator={false}>
     {/* Trusted Landlords */}
-    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>Trusted Landlords →</Text>
+    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
+      Trusted Landlords →
+    </Text>
     <FlatList
       horizontal
       data={landlords}
       keyExtractor={(item) => item.id.toString()}
       renderItem={() => (
         <View style={{ margin: 10, alignItems: "center" }}>
-          <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: "#ccc" }} />
+          <View
+            style={{
+              width: 60,
+              height: 60,
+              borderRadius: 30,
+              backgroundColor: "#ccc",
+            }}
+          />
           <Text>Name</Text>
         </View>
       )}
     />
 
     {/* New Listings */}
-    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>New Listings →</Text>
+    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
+      New Listings →
+    </Text>
     <FlatList
       horizontal
-      data={listings}
-      keyExtractor={(item) => item.id.toString()}
+      data={newListings}
+      keyExtractor={(item) => item.condo_id.toString()}
       renderItem={({ item }) => (
-        <Image source={{ uri: item.image }} style={{ width: 250, height: 150, borderRadius: 10, margin: 10 }} />
+        <View style={{ paddingLeft: 5, marginBottom: 10 }}>
+          <Image
+            source={{
+              uri: item.image,
+            }}
+            style={{ width: 250, height: 150, borderRadius: 10, margin: 10 }}
+          />
+          <Text style={{ fontSize: 14, fontWeight: "500", paddingLeft: 10 }}>
+            {item.title}
+          </Text>
+          <Text style={{ fontSize: 14, fontWeight: "500", paddingLeft: 10 }}>
+            {item.city}
+          </Text>
+        </View>
       )}
     />
 
     {/* Find by Category */}
-    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>Find by Category →</Text>
+    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
+      Find by Category →
+    </Text>
     <FlatList
       horizontal
       data={categories}
@@ -67,13 +114,25 @@ const Body = () => (
     />
 
     {/* Search by Area */}
-    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>Search by Area →</Text>
+    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
+      Search by Area →
+    </Text>
     <FlatList
       horizontal
       data={areas}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
-        <View style={{ width: 100, height: 100, backgroundColor: "#ddd", margin: 10, borderRadius: 10, justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{
+            width: 100,
+            height: 100,
+            backgroundColor: "#ddd",
+            margin: 10,
+            borderRadius: 10,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Text>{item}</Text>
         </View>
       )}
@@ -81,11 +140,31 @@ const Body = () => (
   </ScrollView>
 );
 
-const HomeScreen = () => (
-  <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
-    <Header />
-    <Body />
-  </SafeAreaView>
-);
+const HomeScreen = () => {
+  const [newestListings, setNewestListings] = useState<Listing[]>([]);
+
+  useEffect(() => {
+    const fetchCondos = async () => {
+      try {
+        const data = await getNewestCondos();
+        setNewestListings(data);
+
+        for (let i = 0; i < newestListings.length; i++) {
+          console.log("IMAGE = " + newestListings[i].image);
+        }
+      } catch (error) {
+        console.error("Failure to fetch new condos: ", error);
+      }
+    };
+    fetchCondos();
+  }, []);
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
+      <Header />
+      <Body newListings={newestListings} />
+    </SafeAreaView>
+  );
+};
 
 export default HomeScreen;
