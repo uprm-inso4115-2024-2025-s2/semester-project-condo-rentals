@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, FlatList, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import { getNewestCondos } from "@/backend/queries/newest_condos";
+import getAreas from "@/backend/queries/areas";
 
 // Sample data
 const landlords = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
@@ -12,9 +20,13 @@ type Listing = {
   image: string;
   city: string;
 };
-
+type Area = {
+  area: string;
+  image_url: string;
+};
 interface BodyProps {
   newListings: Listing[];
+  areas: Area[];
 }
 
 const categories = [
@@ -23,7 +35,7 @@ const categories = [
   { id: 3, name: "Parking Included", icon: "car" },
   { id: 4, name: "Pets Allowed", icon: "paw" },
 ];
-const areas = ["Paris", "Terrace", "Trastalleres"];
+// const areas = ["Paris", "Terrace", "Trastalleres"];
 
 const Header = () => (
   <View
@@ -46,7 +58,7 @@ const Header = () => (
   </View>
 );
 
-const Body = ({ newListings }: BodyProps) => (
+const Body = ({ newListings, areas }: BodyProps) => (
   <ScrollView showsVerticalScrollIndicator={false}>
     {/* Trusted Landlords */}
     <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
@@ -87,7 +99,15 @@ const Body = ({ newListings }: BodyProps) => (
             }}
             style={{ width: 250, height: 150, borderRadius: 10, margin: 10 }}
           />
-          <Text style={{ fontSize: 14, fontWeight: "500", paddingLeft: 10 }}>
+          <Text
+            style={{
+              width: 250,
+              fontSize: 14,
+              fontWeight: "500",
+              paddingLeft: 10,
+            }}
+            numberOfLines={1}
+          >
             {item.title}
           </Text>
           <Text style={{ fontSize: 14, fontWeight: "500", paddingLeft: 10 }}>
@@ -122,19 +142,30 @@ const Body = ({ newListings }: BodyProps) => (
       data={areas}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
-        <View
+        <ImageBackground
+          source={{ uri: item.image_url }}
           style={{
             width: 100,
             height: 100,
-            backgroundColor: "#ddd",
+            backgroundImage: item.image_url,
             margin: 10,
-            borderRadius: 10,
+            borderRadius: 100,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text>{item}</Text>
-        </View>
+          <View
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              width: 100,
+              height: 100,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "white" }}>{item.area}</Text>
+          </View>
+        </ImageBackground>
       )}
     />
   </ScrollView>
@@ -142,16 +173,15 @@ const Body = ({ newListings }: BodyProps) => (
 
 const HomeScreen = () => {
   const [newestListings, setNewestListings] = useState<Listing[]>([]);
+  const [areas, setAreas] = useState<Area[]>([]);
 
   useEffect(() => {
     const fetchCondos = async () => {
       try {
-        const data = await getNewestCondos();
-        setNewestListings(data);
-
-        for (let i = 0; i < newestListings.length; i++) {
-          console.log("IMAGE = " + newestListings[i].image);
-        }
+        const newest_condos = await getNewestCondos();
+        setNewestListings(newest_condos);
+        const areas = await getAreas();
+        setAreas(areas);
       } catch (error) {
         console.error("Failure to fetch new condos: ", error);
       }
@@ -162,7 +192,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f8f8f8" }}>
       <Header />
-      <Body newListings={newestListings} />
+      <Body newListings={newestListings} areas={areas} />
     </SafeAreaView>
   );
 };
