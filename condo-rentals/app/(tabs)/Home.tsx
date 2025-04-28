@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
-
+import TrustedLandlords from "../../components/TrustedLandlords"
 // Sample data
 const landlords = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 const listings = [{ id: 1, image: "https://via.placeholder.com/300" }];
@@ -28,19 +28,7 @@ const Header = () => (
 const Body = () => (
   <ScrollView showsVerticalScrollIndicator={false}>
     {/* Trusted Landlords */}
-    <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>Trusted Landlords →</Text>
-    <FlatList
-      horizontal
-      data={landlords}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={() => (
-        <View style={{ margin: 10, alignItems: "center" }}>
-          <View style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: "#ccc" }} />
-          <Text>Name</Text>
-        </View>
-      )}
-    />
-
+    <TrustedLandlords/>
     {/* New Listings */}
     <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>New Listings →</Text>
     <FlatList

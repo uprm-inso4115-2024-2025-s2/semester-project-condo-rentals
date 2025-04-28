@@ -5,7 +5,6 @@ const authRoutes = require("./routes/authRoutes");
 const bookingRoutes = require("./routes/bookingRoutes");
 const propertiesRoutes = require("./routes/propertyRoutes");
 const { createClient } = require("@supabase/supabase-js");
-const trustedLandlordRoutes = require('./routes/trustedLandlordRoutes');
 
 const app = express();
 app.use(cors());
@@ -15,7 +14,6 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/bookings", bookingRoutes);
 app.use("/properties", propertiesRoutes);
-app.use("/api", trustedOwnersRouter); // mounted at /api
 
 app.get("/", (req, res) => {
     res.send("Condo Rental API is running.");
