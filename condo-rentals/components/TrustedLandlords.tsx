@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { supabase } from "../backend/supabaseClient"; 
+import { getTrustedLandlords } from "../backend/queries/trustedLandlords"
 
 interface Landlord {
   ownerId: string;
@@ -25,14 +25,7 @@ const TrustedLandlords: React.FC = () => {
   useEffect(() => {
     async function fetchTrustedLandlords() {
       try {
-        const { data, error } = await supabase
-          .from("landlords")
-          .select("id, name, profileImage, is_verified, average_rating, successful_rentals")
-
-        if (error) {
-          console.error("Supabase error:", error.message);
-          return;
-        }
+        const data = await getTrustedLandlords();
 
         if (data) {
           const mappedLandlords: Landlord[] = (data as SupabaseLandlord[]).map((owner) => ({
