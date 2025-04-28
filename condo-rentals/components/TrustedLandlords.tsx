@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { supabase } from "../backend/supabaseClient"; // adjust the path if needed!
+import { supabase } from "../backend/supabaseClient"; 
 
-// Define the Landlord type
 interface Landlord {
   ownerId: string;
   name: string;
