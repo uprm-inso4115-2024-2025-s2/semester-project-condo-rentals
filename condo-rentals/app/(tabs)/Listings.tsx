@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -96,6 +97,15 @@ const Listings = () => {
       </View>
     );
   }
+=======
+import React from "react";
+import { View, ScrollView, StyleSheet} from "react-native";
+import { useRouter } from "expo-router";
+import RentalListingCard from "../../components/ListingsPreview";
+
+const Listings = () => {
+  const router = useRouter();
+>>>>>>> main
 
   const listings = [
     {
@@ -104,6 +114,10 @@ const Listings = () => {
       location: "Pueblo Mayagüez",
       condoFeatures: "2 Beds, 1 Bath, WiFi, Fully Furnished",
       price: "$400 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+      "https://source.unsplash.com/featured/?livingroom",
+      "https://source.unsplash.com/featured/?bedroom",
+    ],
     },
     {
       landlordName: "Ana López",
@@ -111,6 +125,10 @@ const Listings = () => {
       location: "Condominio El Escorial",
       condoFeatures: "1 Bed, 1 Bath, Study Desk, WiFi",
       price: "$450 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
     },
     {
       landlordName: "Carlos Rivera",
@@ -118,6 +136,10 @@ const Listings = () => {
       location: "Alturas de Mayagüez",
       condoFeatures: "1 Bed, 1 Bath, AC, Internet, Parking",
       price: "$500 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
     },
     {
       landlordName: "Roberto Torres",
@@ -125,7 +147,58 @@ const Listings = () => {
       location: "Mayagüez Terrace",
       condoFeatures: "2 Beds, 1 Bath, Shared Kitchen, Study Lounge",
       price: "$550 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
     },
+<<<<<<< HEAD
+=======
+    {
+      landlordName: "Isabel Martínez",
+      landlordDescription: "Cozy apartment with study-friendly environment.",
+      location: "Dulces Labios",
+      condoFeatures: "1 Bed, 1 Bath, Private Balcony, WiFi",
+      price: "$470 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
+    },
+    {
+      landlordName: "Miguel Santiago",
+      landlordDescription: "Affordable rent, close to supermarkets and transport.",
+      location: "Mayagüez Terrace",
+      condoFeatures: "1 Bed, 1 Bath, Shared Laundry, AC",
+      price: "$430 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
+    },
+    {
+      landlordName: "Laura Hernández",
+      landlordDescription: "Safe neighborhood, walking distance from UPRM.",
+      location: "Mayagüez Terrace",
+      condoFeatures: "2 Beds, 1 Bath, Gated Community, Parking",
+      price: "$520 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
+    },
+    {
+      landlordName: "Pedro Gómez",
+      landlordDescription: "Affordable student housing with all essentials included.",
+      location: "Pueblo Mayagüez",
+      condoFeatures: "1 Bed, 1 Bath, WiFi, Mini-Fridge, Study Desk",
+      price: "$410 per month",
+      images: ["https://source.unsplash.com/featured/?apartment",
+        "https://source.unsplash.com/featured/?livingroom",
+        "https://source.unsplash.com/featured/?bedroom",
+      ],
+    },
+>>>>>>> main
   ];
 
   return (
@@ -163,11 +236,14 @@ const Listings = () => {
               key={index}
               landlordName={listing.landlordName}
               priceLocation={`${listing.price} - ${listing.location}`}
-              onPress={() => setSelectedListing(listing)}
+              onPress={() =>
+                router.push("/(tabs)/ListingDetails")
+              }
             />
           ))}
         </View>
       </ScrollView>
+<<<<<<< HEAD
 
       <Modal
         visible={!!selectedListing}
@@ -187,6 +263,8 @@ const Listings = () => {
           />
         )}
       </Modal>
+=======
+>>>>>>> main
     </View>
   );
 };
