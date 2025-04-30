@@ -92,7 +92,7 @@ export default function Map() {
           .from('condos')
           .select('condo_id, title, description, address, city, state_province, country, postal_code, latitude, longitude, num_bedrooms, num_bathrooms, max_guests, square_footage, price_per_night, is_available, status, host_name, image')
           .order('created_at', { ascending: false })
-          .limit(3); // Maybe increase limit? 3 seems very low.
+          .limit(50); // Maybe increase limit? 3 seems very low.
   
         // Apply filters conditionally
         if (townQueary && townQueary !== "") { // Check if filter is not empty string
