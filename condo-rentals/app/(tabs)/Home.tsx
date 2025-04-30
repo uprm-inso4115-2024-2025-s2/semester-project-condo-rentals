@@ -12,10 +12,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
+import TrustedLandlords from "../../components/TrustedLandlords"
+// Sample data
 import { getNewestCondos } from "@/backend/queries/newest_condos";
 import getAreas from "@/backend/queries/areas";
 import ListingDetails from "@/components/ListingDetails";
-
+        
 const landlords = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
 
 type Listing = {
@@ -73,6 +75,7 @@ const Body = ({ newListings, areas }: BodyProps) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalReady, setModalReady] = useState(false);
 
+
   const handleListingPress = (item: Listing) => {
     const features = [
       `${item.num_bedrooms} Bedroom${item.num_bedrooms !== 1 ? "s" : ""}`,
@@ -109,27 +112,7 @@ const Body = ({ newListings, areas }: BodyProps) => {
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Trusted Landlords */}
-        <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
-          Trusted Landlords →
-        </Text>
-        <FlatList
-          horizontal
-          data={landlords}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={() => (
-            <View style={{ margin: 10, alignItems: "center" }}>
-              <View
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
-                  backgroundColor: "#ccc",
-                }}
-              />
-              <Text>Name</Text>
-            </View>
-          )}
-        />
+        <TrustedLandlords/>
 
         {/* New Listings */}
         <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 15 }}>
