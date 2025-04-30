@@ -59,7 +59,7 @@ export default function Map() {
   const mapRef = useRef<MapView>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropOpen, setIsDropOpen] = useState(false);
-  const [townQueary, setTown] = useState(" ");
+  const [townQueary, setTown] = useState("");
   const [townFilter, setTownFilter] = useState(" ");
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -95,8 +95,8 @@ export default function Map() {
           .limit(3); // Maybe increase limit? 3 seems very low.
   
         // Apply filters conditionally
-        if (townQueary) { // Check if filter is not empty string
-          query = query.eq('species', townQueary.toLowerCase());
+        if (townQueary && townQueary !== "") { // Check if filter is not empty string
+          query = query.eq('city', townQueary);
         }
   
         const { data, error: dbError } = await query;
@@ -246,7 +246,7 @@ export default function Map() {
             open={isMenuOpen}
             value={townQueary}
             items={[
-              { label: "All", value: " " },
+              { label: "All", value: "" },
               { label: "Mayaguez", value: "Mayaguez" },
               { label: "Ponce", value: "Ponce" },
               { label: "Cabo Rojo", value: "Cabo Rojo" },
