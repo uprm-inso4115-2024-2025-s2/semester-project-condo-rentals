@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
   menuToggleButton: {
     position: 'absolute',
     top: 60,
-    left: 20,
+    right: 20,
     backgroundColor: 'lightblue',
     padding: 10,
     borderRadius: 5,

@@ -59,3 +59,28 @@ exports.deleteProperty = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getNewListings = async (req, res) => {
+    try {
+        const { area, limit = 10 } = req.query;
+
+        if (!area) {
+            return res.status(400).json({ error: "Area is required" });
+        }
+
+        const { data, error } = await supabase
+            .from("properties")
+            .select("id, title, price, location, image_url, owner_id, created_at") // select only needed fields
+            .eq("location", area)
+            .eq("is_available", true)
+            .order("created_at", { ascending: false })
+            .limit(parseInt(limit));  // prevent over-fetching
+
+        if (error) throw new Error(error.message);
+
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
