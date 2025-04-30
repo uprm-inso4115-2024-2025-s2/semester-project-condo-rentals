@@ -9,9 +9,43 @@ import React, { useEffect, useState, useRef } from "react";
 import CondoCard from "@/components/CondoCard"; // Import the CondoCard component
 import AddCondoListing from "@/components/addCondoListing";
 import getAllProperties from "../../backend/controllers/propertyController"
+import { supabase } from '../../utils/supabase';
 
 
 const { width } = Dimensions.get('window');
+
+let startData = [] as CondoMarkerProps[]
+const fetchItems = async () => {
+  console.log("Fetching Initial");
+  try {
+    let query = supabase
+      .from('condos')
+      .select('condo_id, title, description, address, city, state_province, country, postal_code, latitude, longitude, num_bedrooms, num_bathrooms, max_guests, square_footage, price_per_night, is_available, status, host_name, image')
+      .order('created_at', { ascending: false })
+      .limit(3); // Maybe increase limit? 3 seems very low.
+
+    // Apply filters conditionally
+    
+
+    const { data, error: dbError } = await query;
+
+    if (dbError) {
+      throw dbError;
+    }
+
+    console.log("Fetched Data:", data);
+    startData = data;
+
+    return 
+     // Set data or empty array if data is null/undefined
+
+  } catch (err: any) {
+    console.error('Error fetching items:', err);
+    Alert.alert("Error", `Failed to fetch items: ${err.message || 'Unknown error'}`);
+  }
+};
+
+fetchItems();
 
 
 
@@ -20,8 +54,8 @@ const { width } = Dimensions.get('window');
 export default function Map() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(InitData))
-  const [listings, setListings] = useState<CondoMarkerProps[]>([]);
+  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(startData))
+  const [listings, setListings] = useState<CondoMarkerProps[]>(startData);
   const mapRef = useRef<MapView>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropOpen, setIsDropOpen] = useState(false);
@@ -30,33 +64,6 @@ export default function Map() {
   const animation = useRef(new Animated.Value(0)).current;
 
   
-  function filterData(Object:MapListingsService, param:string): void{
-    if(param === " "){
-
-      
-
-
-
-    
-      Object.setListing(InitData)
-      console.log(" im empty");
-      setListingService(Object)
-
-      return
-    }
-
-    // This should be done with SQL but its being done with JavaScript for now
-    let Data: CondoMarkerProps[] = []
-    for (let i=0;i<InitData.length;i++){
-      if (InitData[i].town.includes(param)){
-        Data.push(InitData[i]);
-      }
-    }
-
-    Object.setListing(Data)
-    setListingService(Object)
-
-  }
 
 
   useEffect(() => {
@@ -78,12 +85,38 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    try {
-      filterData(ListingService, townQueary);
-      setListings(ListingService.listing);
-    } catch (error) {
-      console.error("Error filtering data:", error);
-    }
+    const fetchItems = async () => {
+      console.log("Fetching with filter town:", townQueary);
+      try {
+        let query = supabase
+          .from('condos')
+          .select('condo_id, title, description, address, city, state_province, country, postal_code, latitude, longitude, num_bedrooms, num_bathrooms, max_guests, square_footage, price_per_night, is_available, status, host_name, image')
+          .order('created_at', { ascending: false })
+          .limit(3); // Maybe increase limit? 3 seems very low.
+  
+        // Apply filters conditionally
+        if (townQueary) { // Check if filter is not empty string
+          query = query.eq('species', townQueary.toLowerCase());
+        }
+  
+        const { data, error: dbError } = await query;
+  
+        if (dbError) {
+          throw dbError;
+        }
+  
+        console.log("Fetched Data:", data);
+        setListings(data);
+         // Set data or empty array if data is null/undefined
+  
+      } catch (err: any) {
+        console.error('Error fetching items:', err);
+        setListings([]); // Clear data on error
+        Alert.alert("Error", `Failed to fetch items: ${err.message || 'Unknown error'}`);
+      }
+    };
+  
+    fetchItems();
   }, [townQueary]);
 
   useEffect(() => {
@@ -183,7 +216,7 @@ export default function Map() {
             is_available  = {listing.is_available}
             status = {listing.status}
             host_name = {listing.host_name}
-            image_url = {listing.image_url}
+            image = {listing.image}
           />
           ))
         ) : (
@@ -241,7 +274,7 @@ export default function Map() {
             name={listing.title}
             description={listing.description}
             price={listing.price_per_night}
-            imageUrl={listing.image_url}
+            imageUrl={listing.image}
             onPress={() => console.log("Condo pressed:", listing.title)}
           />
         ))}
