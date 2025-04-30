@@ -1,10 +1,10 @@
-import React from "react";
-import { View, ScrollView, StyleSheet} from "react-native";
-import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { View, ScrollView, StyleSheet, Modal } from "react-native";
 import RentalListingCard from "../../components/ListingsPreview";
+import RentalListingDetailsCard from "../../components/ListingsDetails";
 
 const Listings = () => {
-  const router = useRouter();
+  const [selectedListing, setSelectedListing] = useState<any | null>(null);
 
   const listings = [
     {
@@ -101,18 +101,31 @@ const Listings = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.grid}>
-          {listings.map((listing, index) => (
-            <RentalListingCard
-              key={index}
-              landlordName={listing.landlordName}
-              priceLocation={`${listing.price} - ${listing.location}`}
-              onPress={() =>
-                router.push("/(tabs)/ListingDetails")
-              }
-            />
-          ))}
+        {listings.map((listing, index) => (
+          <RentalListingCard
+            key={index}
+            landlordName={listing.landlordName}
+            priceLocation={`${listing.price} - ${listing.location}`}
+            onPress={() => setSelectedListing(listing)}
+          />
+        ))}
         </View>
       </ScrollView>
+
+      {/* Modal for Listing Details */}
+      <Modal visible={!!selectedListing} transparent animationType="slide">
+        {selectedListing && (
+          <RentalListingDetailsCard
+            landlordName={selectedListing.landlordName}
+            landlordDescription={selectedListing.landlordDescription}
+            location={selectedListing.location}
+            condoFeatures={selectedListing.condoFeatures}
+            price={selectedListing.price}
+            imageUrl={selectedListing.imageUrl}
+            onClose={() => setSelectedListing(null)}
+          />
+        )}
+      </Modal>
     </View>
   );
 };

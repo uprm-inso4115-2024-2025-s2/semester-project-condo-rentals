@@ -279,6 +279,7 @@ const Body = ({ newListings, areas }: BodyProps) => {
   );
 };
 
+
 const HomeScreen = () => {
   const [newestListings, setNewestListings] = useState<Listing[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
