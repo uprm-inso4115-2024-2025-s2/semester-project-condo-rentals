@@ -8,48 +8,45 @@ import { MapListingsService } from "@/components/MapListingsService";
 import React, { useEffect, useState, useRef } from "react";
 import CondoCard from "@/components/CondoCard"; // Import the CondoCard component
 import AddCondoListing from "@/components/addCondoListing";
+import getAllProperties from "../../backend/controllers/propertyController"
+import { supabase } from '../../utils/supabase';
 
 
 const { width } = Dimensions.get('window');
 
-const InitData = [
-  {
-    id: 1,
-    name: "Condo 1",
-    description: "Cabo Rojo",
-    location: {
-      latitude: 18.2106,
-      longitude: -67.1396,
-    },
-    town: "Cabo Rojo", 
-    price: 150,
-    imageUrl: "https://example.com/condo1.jpg",
-},
-{
-    id: 2,
-    name: "Condo 2",
-    description: "Ponce",
-    location: {
-      latitude: 18.2006,
-      longitude: -67.1396,
-    },
-    town: "Ponce", 
-    price: 150,
-    imageUrl: "https://example.com/condo1.jpg",
-},
-{
-    id: 3,
-    name: "Condo 3",
-    description: "Mayaguez",
-    location: {
-      latitude: 18.2106,
-      longitude: -67.1496,
-    },
-    town: "Mayaguez",                
-    price: 150,
-    imageUrl: "https://example.com/condo1.jpg",
-},
-];
+let startData = [] as CondoMarkerProps[]
+const fetchItems = async () => {
+  console.log("Fetching Initial");
+  try {
+    let query = supabase
+      .from('condos')
+      .select('condo_id, title, description, address, city, state_province, country, postal_code, latitude, longitude, num_bedrooms, num_bathrooms, max_guests, square_footage, price_per_night, is_available, status, host_name, image')
+      .order('created_at', { ascending: false })
+      .limit(50); // Maybe increase limit? 3 seems very low.
+
+    // Apply filters conditionally
+    
+
+    const { data, error: dbError } = await query;
+
+    if (dbError) {
+      throw dbError;
+    }
+
+    console.log("Fetched Data:", data);
+    startData = data;
+
+    return 
+     // Set data or empty array if data is null/undefined
+
+  } catch (err: any) {
+    console.error('Error fetching items:', err);
+    Alert.alert("Error", `Failed to fetch items: ${err.message || 'Unknown error'}`);
+  }
+};
+
+fetchItems();
+
 
 
 
@@ -57,37 +54,16 @@ const InitData = [
 export default function Map() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(InitData))
-  const [listings, setListings] = useState<CondoMarkerProps[]>([]);
+  const [ListingService, setListingService] = useState<MapListingsService>(new MapListingsService(startData))
+  const [listings, setListings] = useState<CondoMarkerProps[]>(startData);
   const mapRef = useRef<MapView>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropOpen, setIsDropOpen] = useState(false);
-  const [townQueary, setTown] = useState(" ");
+  const [townQueary, setTown] = useState("");
   const [townFilter, setTownFilter] = useState(" ");
   const animation = useRef(new Animated.Value(0)).current;
 
   
-  function filterData(Object:MapListingsService, param:string): void{
-    if(param === " "){
-      Object.setListing(InitData)
-      console.log(" im empty");
-      setListingService(Object)
-
-      return
-    }
-
-    // This should be done with SQL but its being done with JavaScript for now
-    let Data: CondoMarkerProps[] = []
-    for (let i=0;i<InitData.length;i++){
-      if (InitData[i].town.includes(param)){
-        Data.push(InitData[i]);
-      }
-    }
-
-    Object.setListing(Data)
-    setListingService(Object)
-
-  }
 
 
   useEffect(() => {
@@ -109,12 +85,38 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    try {
-      filterData(ListingService, townQueary);
-      setListings(ListingService.listing);
-    } catch (error) {
-      console.error("Error filtering data:", error);
-    }
+    const fetchItems = async () => {
+      console.log("Fetching with filter town:", townQueary);
+      try {
+        let query = supabase
+          .from('condos')
+          .select('condo_id, title, description, address, city, state_province, country, postal_code, latitude, longitude, num_bedrooms, num_bathrooms, max_guests, square_footage, price_per_night, is_available, status, host_name, image')
+          .order('created_at', { ascending: false })
+          .limit(50); // Maybe increase limit? 3 seems very low.
+  
+        // Apply filters conditionally
+        if (townQueary && townQueary !== "") { // Check if filter is not empty string
+          query = query.eq('city', townQueary);
+        }
+  
+        const { data, error: dbError } = await query;
+  
+        if (dbError) {
+          throw dbError;
+        }
+  
+        console.log("Fetched Data:", data);
+        setListings(data);
+         // Set data or empty array if data is null/undefined
+  
+      } catch (err: any) {
+        console.error('Error fetching items:', err);
+        setListings([]); // Clear data on error
+        Alert.alert("Error", `Failed to fetch items: ${err.message || 'Unknown error'}`);
+      }
+    };
+  
+    fetchItems();
   }, [townQueary]);
 
   useEffect(() => {
@@ -166,7 +168,8 @@ export default function Map() {
 
   const getVisibleListings = (listings: CondoMarkerProps[], region: any) => {
     return listings.filter((listing) => {
-      const { latitude, longitude } = listing.location;
+      const latitude = listing.latitude;
+      const longitude = listing.longitude;
       return (
         latitude >= region.latitude - region.latitudeDelta / 2 &&
         latitude <= region.latitude + region.latitudeDelta / 2 &&
@@ -195,13 +198,25 @@ export default function Map() {
             
             <CondoMarker
             key={index}
-            id={listing.id}
-            name={listing.name}
+            condo_id={listing.condo_id}
+            title={listing.title}
             description={listing.description}
-            location={listing.location}
-            price={listing.price}
-            imageUrl={listing.imageUrl}
-            town={listing.town}
+            address = {listing.address}
+            city = {listing.city}
+            state_province = {listing.state_province}
+            country = {listing.country}
+            postal_code = {listing.postal_code}
+            latitude =  {listing.latitude}
+            longitude = {listing.longitude}
+            num_bedrooms = {listing.num_bedrooms}
+            num_bathrooms = {listing.num_bathrooms}
+            max_guests = {listing.max_guests}
+            square_footage = {listing.square_footage}
+            price_per_night = {listing.price_per_night}
+            is_available  = {listing.is_available}
+            status = {listing.status}
+            host_name = {listing.host_name}
+            image = {listing.image}
           />
           ))
         ) : (
@@ -231,7 +246,7 @@ export default function Map() {
             open={isMenuOpen}
             value={townQueary}
             items={[
-              { label: "All", value: " " },
+              { label: "All", value: "" },
               { label: "Mayaguez", value: "Mayaguez" },
               { label: "Ponce", value: "Ponce" },
               { label: "Cabo Rojo", value: "Cabo Rojo" },
@@ -254,13 +269,13 @@ export default function Map() {
       <ScrollView horizontal style={styles.cardList}>
         {visibleListings.map((listing) => (
           <CondoCard
-            key={listing.id}
-            id={listing.name}
-            name={listing.name}
+            key={listing.condo_id}
+            id={listing.title}
+            name={listing.title}
             description={listing.description}
-            price={listing.price}
-            imageUrl={listing.imageUrl}
-            onPress={() => console.log("Condo pressed:", listing.id)}
+            price={listing.price_per_night}
+            imageUrl={listing.image}
+            onPress={() => console.log("Condo pressed:", listing.title)}
           />
         ))}
       </ScrollView>
