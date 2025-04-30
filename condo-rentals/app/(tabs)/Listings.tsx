@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import RentalListingCard from "../../components/ListingsPreview";
-import CondoDetails from "../../components/ListingsDetails";
+import { fetchListings, Listing } from "../../backend/queries/condos";
 import { supabase } from "../../backend/supabase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
@@ -163,7 +163,8 @@ const Listings = () => {
               key={index}
               landlordName={listing.landlordName}
               priceLocation={`${listing.price} - ${listing.location}`}
-              onPress={() => setSelectedListing(listing)}
+              onPress={() => router.push("/(tabs)/ListingDetails")}
+              imageUrl={listing.images?.[0]}
             />
           ))}
         </View>
