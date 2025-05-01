@@ -65,7 +65,7 @@ const RentalListingDetailsCard: React.FC<ListingDetailsProps> = ({
 
         {/* Listing Details Header */}
         <Text style={styles.header}>Listing Details</Text>
-        
+
         {/* Spacing Below Header */}
         <View style={styles.spacer} />
 
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: width * 0.92,
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderRadius: 14,
     padding: 20,
     shadowColor: "#000",
@@ -138,13 +138,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     alignSelf: "flex-start",
+    color: "#0D47A1",
   },
   spacer: {
     height: 8,
   },
   subHeader: {
     fontSize: 14,
-    color: "gray",
+    color: "#0D47A1",
     marginBottom: 20,
     alignSelf: "flex-start",
   },
@@ -159,6 +160,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 15,
     alignSelf: "flex-start",
+    color: "#1565C0",
   },
   input: {
     width: "100%",
@@ -167,8 +169,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     marginTop: 5,
-    backgroundColor: "#F8F8F8",
-    color: "#808080",
+    backgroundColor: "#E3F2FD",
+    color: "#000",
     fontSize: 14,
   },
   textArea: {

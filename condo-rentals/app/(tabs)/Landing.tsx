@@ -50,7 +50,31 @@ export default function LandingPage() {
                 </TouchableOpacity>
                 
 
-                {/* Success Stories - future task*/}
+                {/* Success Stories Section */}
+                <View style={styles.storiesSection}>
+                    <Text style={styles.storiesTitle}>Success Stories</Text>
+
+                    <View style={styles.storyCard}>
+                        <Text style={styles.storyText}>
+                            "We were relocating last minute and struggling to find a place. Condo Rentals saved us—found a perfect condo in less than 24 hours!" 
+                            {"\n"}- S. Holmes
+                        </Text>
+                    </View>
+
+                    <View style={styles.storyCard}>
+                        <Text style={styles.storyText}>
+                            "I didn’t think I could afford anything nice, but this app helped me find a cozy place right near my job. Totally recommend it!" 
+                            {"\n"}- Cyndi Lauper
+                        </Text>
+                    </View>
+
+                    <View style={styles.storyCard}>
+                        <Text style={styles.storyText}>
+                            "We wanted a rental that gave spooky vibes for our honeymoon, and this app had tons of verified listings. We booked one in minutes!" 
+                            {"\n"}- The Adams Family
+                        </Text>
+                    </View>
+                </View>
 
 
                 {/* Footer */}
@@ -154,7 +178,7 @@ const styles = StyleSheet.create({
     },
 
     searchButton: {
-        backgroundColor: "#0D47A1",
+        backgroundColor: "#1565C0",
         padding: 10,
         borderRadius: 8,
     },
@@ -220,7 +244,7 @@ const styles = StyleSheet.create({
     },
 
     signInButton: {
-        backgroundColor: "#42A5F5",
+        backgroundColor: "#1565C0",
         marginTop: 20,
     },
 
@@ -247,4 +271,40 @@ const styles = StyleSheet.create({
         height: 280,
         marginBottom: 20,
     },
+    
+    storiesSection: {
+        marginTop: 40,
+        padding: 20,
+        backgroundColor: "#BBDEFB",
+        borderRadius: 12,
+        alignItems: "center",
+        width: "90%",
+        alignSelf: "center",
+    },
+    storiesTitle: {
+        fontSize: 22,
+        fontWeight: "bold",
+        color: "#fffff",
+        marginBottom: 15,
+    },
+
+    storyCard: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 10,
+        padding: 15,
+        marginBottom: 10,
+        width: "100%",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 2,
+    },
+
+    storyText: {
+        fontSize: 16,
+        color: "#333",
+        lineHeight: 22,
+    }
+    
 });

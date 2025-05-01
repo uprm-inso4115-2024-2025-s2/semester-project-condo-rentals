@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -100,11 +101,17 @@ const Listings = () => {
 =======
 import React from "react";
 import { View, ScrollView, StyleSheet} from "react-native";
+=======
+import React, { useEffect, useState } from "react";
+import { View, ScrollView, StyleSheet } from "react-native";
+>>>>>>> da35d071c42b470a3d38af728973952ef78fca6f
 import { useRouter } from "expo-router";
 import RentalListingCard from "../../components/ListingsPreview";
+import { fetchListings, Listing } from "../../backend/queries/condos";
 
 const Listings = () => {
   const router = useRouter();
+<<<<<<< HEAD
 >>>>>>> main
 
   const listings = [
@@ -200,6 +207,18 @@ const Listings = () => {
     },
 >>>>>>> main
   ];
+=======
+  const [listings, setListings] = useState<Listing[]>([]);
+
+  useEffect(() => {
+    const loadListings = async () => {
+      const data = await fetchListings();
+      if (data) setListings(data);
+    };
+
+    loadListings();
+  }, []);
+>>>>>>> da35d071c42b470a3d38af728973952ef78fca6f
 
   return (
     <View style={styles.container}>
@@ -236,9 +255,8 @@ const Listings = () => {
               key={index}
               landlordName={listing.landlordName}
               priceLocation={`${listing.price} - ${listing.location}`}
-              onPress={() =>
-                router.push("/(tabs)/ListingDetails")
-              }
+              onPress={() => router.push("/(tabs)/ListingDetails")}
+              imageUrl={listing.images?.[0]}
             />
           ))}
         </View>

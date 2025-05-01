@@ -11,8 +11,8 @@ export default function CondoMarker(Details: CondoMarkerProps) {
   return (
     
     <Marker
-      coordinate={Details.location}
-      title={Details.name}
+      coordinate={{latitude : Details.latitude ,  longitude: Details.longitude}}
+      title={Details.title}
       description={Details.description}>
         <Image source={require("../assets/images/Condo Rental Assets/Condo_MapMarker.png")} style={{height: 50, width: 50}} />
         
