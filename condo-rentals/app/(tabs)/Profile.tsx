@@ -161,37 +161,60 @@ export default function Listings() {
       <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
         {/* Botón Go Back */}
         <View style={styles.headerButton}>
-          <TouchableOpacity
-            onPress={() => router.push("/Landing")}
-            style={styles.goBackButton}
-          >
+          <TouchableOpacity onPress={() => router.push("/Landing")} style={styles.goBackButton}>
             <Text style={styles.goBackButtonText}>Go Back</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Logo */}
-        <View style={styles.headerLogo}>
-          <View style={styles.logoContainer}>
-            <Image
-              source={require("../../assets/images/Condo Rental Assets/Condo_Logo.png")}
-              style={styles.logo}
+        {/* Header con imagen + bio en fila */}
+        <View style={styles.profileHeader}>
+          {/* Imagen cuadrada */}
+          <Image
+            source={require("../../assets/images/profilePic.png")}
+            style={styles.profileImage}
+          />
+
+          {/* Nombre + bio */}
+          <View style={{ flex: 1, marginLeft: 16 }}>
+            <Text style={styles.profileName}>Alex Rodriguez</Text>
+            <BioSection
+              bio={profile.bio ?? ""}
+              onSaveBio={async (newBio) => {
+                await updateBio(profile.id, newBio);
+                setProfile({ ...profile, bio: newBio });
+              }}
             />
           </View>
         </View>
 
-        {/* Texto placeholder */}
-        <View style={styles.textContainer}>
-          <Text>User Authentication & Profile Team</Text>
+        {/* Lista de Rentals */}
+        <View style={styles.rentalsContainer}>
+          <Text style={styles.rentalsHeader}>My Properties/Rentals</Text>
+
+          {[
+            { icon: require("../../assets/images/house.png"), address: "Calle Rosado, San Juan", type: "House", owned: false },
+            { icon: require("../../assets/images/house.png"), address: "456 Ocean Ave, Ponce", type: "House", owned: true },
+            { icon: require("../../assets/images/apartment.png"), address: "789 Blv Emeterio, Mayagüez", type: "Apartment", owned: false },
+            { icon: require("../../assets/images/apartment.png"), address: "101 Metro Plaza, Bayamón", type: "Apartment", owned: true },
+            { icon: require("../../assets/images/house.png"), address: "Avenida Florinda, Caguas", type: "House", owned: false },
+            { icon: require("../../assets/images/house.png"), address: "303 Villa Cordero, Humacao", type: "House", owned: true },
+            { icon: require("../../assets/images/apartment.png"), address: "404 Valley View, Arecibo", type: "Apartment", owned: false },
+            { icon: require("../../assets/images/apartment.png"), address: "505 Capital St, San Juan", type: "Apartment", owned: true },
+          ].map((rental, index) => (
+            <View key={index} style={styles.rentalCard}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image source={rental.icon} style={styles.rentalIcon} />
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={{ fontWeight: "bold" }}>{rental.address}</Text>
+                  <Text style={{ fontSize: 12, color: "#555" }}>
+                    {rental.type} · {rental.owned ? "Owned" : "Rental"}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          ))}
         </View>
 
-        {/* Sección Bio */}
-        <BioSection
-          bio={profile.bio ?? ""}
-          onSaveBio={async (newBio) => {
-            await updateBio(profile.id, newBio);
-            setProfile({ ...profile, bio: newBio });
-          }}
-        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -229,9 +252,51 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginTop: 16,
     padding: 16,
-    backgroundColor: "#f9fafb",
+    backgroundColor: "#C1E0FF",
     borderRadius: 12,
   },
+
+  profileHeader: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    paddingHorizontal: 24,
+    paddingTop: 20,
+  },
+  profileImage: {
+    width: 130,
+    height: 130,
+    borderRadius: 70, // make it rounder
+    backgroundColor: "#e5e7eb",
+    resizeMode: "cover",
+  },
+  profileName: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 10,
+  },
+  rentalsContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
+  },
+  rentalsHeader: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginBottom: 12,
+  },
+  rentalCard: {
+    padding: 10,
+    backgroundColor: "#C1E0FF",
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  rentalIcon: {
+    width: 50,
+    height: 36,
+    borderRadius: 10,
+    resizeMode: "contain",
+  },
+
   bioText: { fontSize: 16, marginBottom: 12 },
   editBtn: {
     alignSelf: "flex-start",
