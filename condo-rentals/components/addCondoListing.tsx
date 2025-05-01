@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
 } from "react-native";
+import * as Location from "expo-location";
 
 type AddCondoListingProps = {
   onAdd: (newListing: {
@@ -27,33 +28,42 @@ export default function AddCondoListing({ onAdd }: AddCondoListingProps) {
   const [description, setDescription] = useState("");
   const [town, setTown] = useState("");
   const [price, setPrice] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+  const [address, setAddress] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const handleAdd = () => {
-    if (!name || !description || !town || !price || !latitude || !longitude) {
+  const handleAdd = async () => {
+    if (!name || !description || !town || !price || !address) {
       Alert.alert("Missing fields", "Please fill in all required fields.");
       return;
     }
 
-    const newListing = {
-      id: Date.now(),
-      name,
-      description,
-      location: {
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
-      },
-      town,
-      price: parseFloat(price),
-      imageUrl: imageUrl || "https://example.com/condo1.jpg",
-    };
+    try {
+      const geoResults = await Location.geocodeAsync(address);
+      if (geoResults.length === 0) {
+        Alert.alert("Invalid address", "Could not geocode the address.");
+        return;
+      }
 
-    onAdd(newListing);
-    setModalVisible(false);
-    resetForm();
-    Alert.alert("Listing Added", "Your listing was successfully added!");
+      const { latitude, longitude } = geoResults[0];
+
+      const newListing = {
+        id: Date.now(),
+        name,
+        description,
+        location: { latitude, longitude },
+        town,
+        price: parseFloat(price),
+        imageUrl: imageUrl || "https://example.com/condo1.jpg",
+      };
+
+      onAdd(newListing);
+      setModalVisible(false);
+      resetForm();
+      Alert.alert("Listing Added", "Your listing was successfully added!");
+    } catch (error) {
+      console.error("Geocoding error:", error);
+      Alert.alert("Error", "Failed to convert address to coordinates.");
+    }
   };
 
   const resetForm = () => {
@@ -61,8 +71,7 @@ export default function AddCondoListing({ onAdd }: AddCondoListingProps) {
     setDescription("");
     setTown("");
     setPrice("");
-    setLatitude("");
-    setLongitude("");
+    setAddress("");
     setImageUrl("");
   };
 
@@ -111,17 +120,9 @@ export default function AddCondoListing({ onAdd }: AddCondoListingProps) {
               style={styles.input}
             />
             <TextInput
-              placeholder="Latitude"
-              value={latitude}
-              onChangeText={setLatitude}
-              keyboardType="numeric"
-              style={styles.input}
-            />
-            <TextInput
-              placeholder="Longitude"
-              value={longitude}
-              onChangeText={setLongitude}
-              keyboardType="numeric"
+              placeholder="Address (e.g., 123 Main St, Mayaguez)"
+              value={address}
+              onChangeText={setAddress}
               style={styles.input}
             />
             <TextInput
