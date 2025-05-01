@@ -216,9 +216,16 @@ export default function Map() {
         />
       </TouchableOpacity>
     
-    <View style={styles.addCondoButtonContainer}>
-      <AddCondoListing />
-    </View>
+      <View style={styles.addCondoButtonContainer}>
+  <AddCondoListing
+    onAdd={(newListing) => {
+      const updatedListings = [...listings, newListing];
+      setListings(updatedListings);
+      ListingService.setListing(updatedListings);
+    }}
+  />
+</View>
+
 
       <Animated.View
         style={[
